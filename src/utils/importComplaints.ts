@@ -3,8 +3,10 @@ import { complaintApi } from '../services/complaintApi'
 
 /**
  * Şikayetvar'dan alınan gerçek şikayetler
- * Kaynak: https://www.sikayetvar.com/trendyol-yemek/komisyon (4 sayfa)
- * Toplam: 93 şikayet (tüm sayfalar)
+ * Kaynak: 
+ * - https://www.sikayetvar.com/trendyol-yemek/komisyon (4 sayfa, 93 şikayet)
+ * - https://www.sikayetvar.com/yemeksepeti/komisyon (2 sayfa, 44 şikayet)
+ * Toplam: 137 şikayet
  */
 const sikayetvarComplaints: Omit<Complaint, 'id' | 'createdAt' | 'upvotes' | 'status'>[] = [
   // SAYFA 1 - RESTORAN ŞİKAYETLERİ
@@ -511,6 +513,282 @@ const sikayetvarComplaints: Omit<Complaint, 'id' | 'createdAt' | 'upvotes' | 'st
     description: 'Siz paydaşlarınızın elemanlarına sigorta yapıp yapmadığını sorgulamıyorsunuz. Bu tür adamlara para kazandırmayın sadece komisyon alıyoruz diye kocaman şirketsiniz en baştan bunu sıkı tutacaksınızki paydaşlarınızın yanında çalışan elemanlarda rahat etsin.',
     category: 'customer',
     platform: 'Trendyol Yemek',
+  },
+  // YEMEKSEPETİ KOMİSYON ŞİKAYETLERİ
+  // Kaynak: https://www.sikayetvar.com/yemeksepeti/komisyon
+  // SAYFA 1 - RESTORAN ŞİKAYETLERİ
+  {
+    title: 'Kendi Kuryeme Geçiş Talebime Yemeksepeti\'nden Yanıt Alamıyorum, İşlerim Aksıyor',
+    description: 'Yemeksepeti iş ortağı olarak Ankara Aktepe\'de hizmet veren Zirve Soğuk Baklava işletmecisiyim. Yaklaşık 2 aydır kendi kuryeme geçiş yapmak istiyorum. Komisyon oranlarının yüksek olması nedeniyle kendi kuryemle çalışarak bu oranı düşürmek ve fiyatlarımı müşterilerim için daha uygun hale getirmek istiyorum.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Kendi Kuryemizle Çalışma Talebimize Dönüş Yapılmıyor Ve Sorunumuz Çözülmüyor',
+    description: 'Tosthane Didim (Didim/Aydın) işletmesinin sahibi olarak, Yemeksepeti üzerinden uzun süredir yaşadığımız bir sorunu paylaşmak istiyorum. Yüksek komisyon oranları nedeniyle kendi kuryemizle çalışmak için defalarca başvuruda bulunduk. Ancak her seferinde "kısa sürede dönüş yapacağız" denilerek süreç sürüncemede bırakılıyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Joker Kesintisiyle Haksız Kazanç Ve Destek Eksikliği',
+    description: 'Restoran sahibiyim. Yemeksepeti\'nde Joker indirimi hiçbir şekilde aktif olmamasına rağmen, her siparişimden \'Joker kesintisi\' adı altında haksız para alıyorlar. Müşteri hizmetlerini defalarca aradım; \'Joker aktif görünmüyor ama kesinti var, işlem yapamıyoruz\' diyerek geçiştiriyorlar. Bu tamamen işletmemizi mağdur eden bir durum.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Kendi Kuryemizi Kullanmamıza İzin Verilmiyor, Mağduriyet Yaşıyoruz',
+    description: 'Haziran 2025\'ten bu yana, restoran kodumuz gjsn ile Yemeksepeti üzerinden kendi kuryemizi kullanmak için en az 5 defa yazılı olarak ve çok sayıda telefon görüşmesiyle başvuruda bulunduk. Ancak her hafta e-posta yoluyla yaptığımız başvurular dikkate alınmadı, tarafımıza yalnızca "Müşteri yorumlarında..." denilerek geçiştirildi.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nden Haksız Sipariş İletim Bedeli Kesintisi Nedeniyle Maddi Zarar',
+    description: 'Sakarya\'da faaliyet gösteren "Çorbam" adlı restoranımda, yaklaşık 10 gündür Yemeksepeti iş ortağı olarak hizmet vermekteyim. Restoranımı açtığımdan bu yana toplamda 30 sipariş aldım. İlk 20 siparişte herhangi bir sorun yaşanmazken, son 10 siparişte her bir siparişten "sipariş iletim bedeli" adı altında haksız kesinti yapıldı.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nin Ek Ücret Ve Komisyon Politikaları İşletmemizi Mağdur Ediyor',
+    description: 'Lüleburgaz Büfe Komşu olarak Yemeksepeti\'nin son dönemde uyguladığı ücretlendirme politikası nedeniyle ciddi mağduriyet yaşamaktayız. Sipariş veren müşterilerden alınan ek ücretler ve yüksek komisyon oranları işletmemizin karlılığını olumsuz etkiliyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Yüksek Komisyon Ve Kurye Zorunluluğu Mağduriyeti',
+    description: 'Yemeksepeti üzerinden Eskişehir\'de faaliyet gösteren restoranım için yaklaşık 3 aydır ciddi bir sorun yaşıyorum. Platform, kendi kuryeleriyle çalışmam için beni zorlamakta ve bu nedenle yüksek komisyon talep etmektedir. Restoranımın üye numarası: zmgx. Bu konuyla ilgili olarak defalarca Yemeksepeti müşteri hizmetlerine başvurdum ancak çözüm bulamadım.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Vale\'den Ayrılamıyoruz: Yüksek Komisyon Ve Cevapsızlık',
+    description: 'Ayvalık Tost Dünyası Aydın Efeler Cumhuriyet Caddesi şubesi olarak, Yemeksepeti Vale kurye sistemine yaklaşık bir yıldan uzun süredir dahiliz. İşletme numaramız D 531\'dir. Başlangıçta cazip görünen komisyon oranları zamanla ciddi şekilde arttı; yüzde 20 ile başlayan oranlar şu an yüzde 44\'e ulaştı.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Yemek Kartı Ve Kendi Kurye Kullanımına İzin Vermiyor',
+    description: 'İstanbul Bayrampaşa\'da faaliyet gösteren Gwzy jr. Tosting ve Sandviç olarak, Yemeksepeti Partner platformunda yaşadığımız bir sorunu paylaşmak istiyorum. Lokasyonumuzun çevresindeki diğer restoranlar yemek kartı ile ödeme kabul edebiliyor ve kendi kuryeleriyle çalışabiliyorlar. Ancak aynı talebimizi bizim için reddediyorlar.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yüksek Komisyon Oranları İşletmeleri Zorluyor',
+    description: 'Yemeksepeti\'nde mağaza açacağım ama komisyon oranları ciddi derecede yüksek benden daha fazla para kazanıyor. Hesap yaptığımda bu kadar ciddi komisyon oranı alınır mı? Sadece Yemeksepeti\'nde değil getir, Migros ve Trendyol\'da da böyle! İşletmelere yazık değil mi?',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Hem Müşteriden Hem Restorandan Haksız Ek Ücretler Alıyor',
+    description: 'Yemeksepeti verdiği hizmeti zaten restoranlardan komisyon olarak alıyor. Ben hem Yemeksepeti müşterisi hem de restoran panel kullanıcısıyım. Hem restoranlardan kurye için ekstra ücret alınıyor hem de müşteriden son zamanlarda hizmet ve servis bedeli altında ekstra ücretler alınıyor. Hiç hoş değil, Yemeksepeti bu uygulamadan vazgeçmeli.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Onayım Olmadan Express Sisteme Geçişle Büyük Maddi Kayıp Yaşadım',
+    description: 'Ankara Çankaya ilçesinde faaliyet gösteren Ünlü Dalyan Balıkçısı restoran işletmecisiyim. Restoran kodum L43J\'dir. Hiçbir yazılı veya sözlü talebim olmadan, kendi kuryelerimle çalışırken Yemeksepeti Express kurye sistemine geçişim yapıldı. Bu değişiklik sonrası müşteri memnuniyetsizliği ve şikayetler arttı.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Kendi Kuryemizle Çalışma Talebimizin Sürekli Göz Ardı Edilmesi',
+    description: 'Doydoy Kumru Sandviç & Tost olarak yaklaşık 3 aydır Yemeksepeti üzerinden yaşadığımız bir sorunu paylaşmak istiyorum. Restoranımız olarak kendi kuryemizle çalışmak istediğimizi defalarca belirtmemize rağmen, Yemeksepeti tarafından bu talebimiz dikkate alınmıyor ve sürekli olarak \'kriter saçmalığı\' denilerek reddediliyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Kendi Kuryemi Kullanamıyorum, Mağduriyetim Giderilmiyor!',
+    description: 'Yemeksepeti üzerinden "Harbiye Antakya Dürüm" (Çankaya, Ankara) restoranı olarak yaklaşık 1 yıldır kendi kuryeme geçmek istiyorum. Başlangıçta 2 ay boyunca Yemeksepeti\'nin kendi kuryeleriyle çalışmam gerektiği, sonrasında ise kendi kuryemi kullanabileceğim belirtildi. Ancak defalarca başvurmama rağmen hala geçiş yapamadım.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Müşteri Temsilcileri Telefonda Yardımcı Olmuyor Maille De Dönüş Yapılmıyor',
+    description: 'Ayrıca, panelde yeni olan işletme sahipleri olarak müşteri temsilcilerinin telefonda daha fazla yardımcı olmasını bekliyoruz. Aradığımızda sadece "mail atın" denilerek görüşme kapatılıyor ve gönderdiğimiz maillere de herhangi bir düzeltme ya da dönüş yapılmıyor. Bu konuda da destek ve çözüm talep ediyoruz.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nden Açıklamasız İletişim Bedeli Kesintisi Ve Geri Dönüş Sorunu',
+    description: 'Yemeksepeti restoran hizmetini kullanıyoruz ve yaklaşık 1 hafta önce, "Meşhur Tavukçu Adem Usta" adlı işletmemiz üzerinden hesabımızdan "iletişim bedeli" adı altında 408 TL kesinti yapıldı. Bu tür bir kesintiyle ilk kez karşılaşıyoruz ve söz konusu tutarın neden alındığı konusunda herhangi bir açıklama yapılmadı.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nde Bilgilendirme Olmadan Yüksek Komisyon Ve Kesinti Mağduriyeti',
+    description: 'Yemeksepeti platformunda restoran işletmecisi olarak hizmet veriyorum. Uzun süredir, özellikle kampanya dönemlerinde, tarafımıza detaylı bir açıklama yapılmadan yüksek oranlarda komisyon ve kesinti uygulanıyor. Şirket olarak bu kesintileri ancak işletme sahipleri fark ettiğinde öğreniyoruz; Yemeksepeti önceden bilgilendirme yapmıyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Joker Kampanyasında Aşırı Komisyon Kesintisi Mağduriyeti',
+    description: 'İstanbul Bahçelievler\'de bulunan restoranım üzerinden Yemeksepeti platformunda Joker kampanyası kapsamında alınan siparişlerde çok yüksek komisyon kesintileriyle karşılaşıyorum. Özellikle bugün gerçekleşen bir siparişte, 1000 TL\'lik toplam tutardan 700 TL komisyon kesildi. Bu durum, hem Joker kampanyası hem de normal komisyon oranlarının birleşmesiyle oluşuyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nin Yüksek Komisyon Ve Ekstra Kurye Ücretleri Rekabeti Zorlaştırıyor',
+    description: 'Restoranımda Yemeksepeti üzerinden satış yapıyorum ve Yemeksepeti kuryesi ile çalışıyorum. %38 komisyon ödememe rağmen müşteriden kurye 42₺ ekstra kurye bedeli parası isteniyor. Benden bu tutar zaten kesiliyor. Ekstra müşteriden almaları hiç etik değil ve platformda rekabete giremiyorum.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Vale Hizmeti Zorunluluğu Ve Yüksek Komisyonlar Küçük Esnafı Zorluyor',
+    description: 'Kadıköy Zühtü Paşa Mahallesi\'nde bulunan Pişigurme restoranı olarak yaklaşık beş yıldır Yemeksepeti üzerinden hizmet veriyorum ve son bir yıldır da vale hizmetini kullanıyorum. Ancak son bir ay içinde iki kez vale hizmetinden çıkmak ve kendi ekibimle teslimata devam etmek istediğimi Yemeksepeti\'ne ilettim ancak reddedildi.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nde Sözleşmeye Aykırı Yüksek Komisyon Kesintileri ve Müşteri Hizmetlerine Ulaşamamak',
+    description: 'Son iki aydır Yemeksepeti üzerinden gelen siparişlerde, sözleşmede belirtilen oranların dışında, anlam veremediğimiz yüksek oranda komisyon kesintileriyle karşılaşıyoruz. Örneğin, 917 TL\'lik bir siparişten tarafımıza yalnızca 275 TL ödeme yapılıyor. Bu durum neredeyse tüm siparişlerde tekrarlanıyor ve müşteri hizmetlerine ulaşamıyoruz.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  // SAYFA 1 - MÜŞTERİ ŞİKAYETLERİ
+  {
+    title: 'Sipariş İptali Ve Kötü Hizmet Sonrası Ücret İadesi Sorunu',
+    description: '30.08.2025 tarihinde saat 20:28\'de Yemeksepeti üzerinden Waffle Sarayı adlı işletmeden 3 adet waffle siparişi verdim (Sipariş No: #rkx0-s8jv). Siparişi Aydınlıkevler Mah. Defne Sok. No:9 Hüma Apt. Melikgazi/Kayseri adresine verdim ve toplam 520 TL\'yi nakit olarak ödedim. Sipariş sürecinde önce teknolojik sorunlar yaşandı, sonra sipariş iptal edildi ancak ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'Yemeksepeti',
+  },
+  // SAYFA 2 - RESTORAN ŞİKAYETLERİ
+  {
+    title: 'Yemek Sepeti\'nin Restoran İşletmelerine Destek Olmaması',
+    description: 'Yemek Sepeti, restoran işletmelerine asla sahip çıkmayan bir kurum. Bizim üzerimizden para kazanıp bizi savunmuyor, her türlü zarara uğramamıza neden oluyor. Bu Yemek Sepeti platformunu CİMER dahil her yere şikayet ettim. İnşallah kısa zamanda ceza kesilir ve hakkımı kim yiyorsa, çalışanları dahil, cezasını çeksin.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Kapıda Kredi Kartı İle Ödeme İçin Alınan Ek Ücret Ve İletişim Sorunları',
+    description: 'Yemeksepeti\'nden kapıda kredi kartı ile ödeme seçeneğini kullandığınızda, 5 TL komisyon ücreti yansıtılıyor. Ben her gittiğim yerde bahşiş veren biriyim. 5 TL günümüzde artık sakız parası gibi görünebilir ama mesele bu değil. Asıl sorun, bu uygulamanın adil olmaması. Kapıda kredi kartı ile ödeme yapmak için ekstra ücret alınması mantıksız.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Joker Bedeli Ve Marketing Ücreti Kesintilerinden Şikayetçiyim',
+    description: 'Dünyanın en kötü hizmet sağlayıcısı olabilir. Önce Joker bedeli kesiliyor, sonra tekrar Joker bedeli kesiliyor. Müşterileri yanıltmak için de \'marketing fee\' adı altında ücret alınıyor. Joker\'den çıkmak istiyorum ancak 2 iş gününden önce çıkamıyorum. Sanki 90\'larda yaşıyoruz.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti Joker Kampanyasında Yüksek Komisyon Kesintileri Mağduriyeti',
+    description: 'Yemek Sepeti Joker\'e katıldım, siparişlerim biraz artsın diye. Ama yapmaz olaydım; o kadar çok kesinti ve komisyon uyguluyorlar ki, siparişlerimiz ya zararına ya da bedavaya gidiyor. Zaten kendi uygulama ve yüzdelik ücretinizi kesiyorsunuz, bu kadar yüksek komisyon neden? Buna bir çözüm düşünülmeli.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti\'nin Kendi Kuryesiyle Yüksek Komisyon Alması Müşteriyi Ve Restoranı Mağdur Ediyor',
+    description: 'Yemek Sepeti bir çok şirkette zorunlu olarak kendi kuryesiyle çalıştırıyor. Bu kuryelerle çalışınca restorandan %40 yakın kesinti yapıyor ve restoranlarda buna kıyasla fiyat artışı yapıyor. Bana soracak olursanız kesinlikle getir yemek. Trendyol veya Migros\'tan sipariş verin. Yemek Sepeti\'nden sipariş vermeyin.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nin Kendi Kuryemize Geçişi Engellemesi Mağduriyet Yaratıyor',
+    description: 'Yemeksepeti Kendi Kuryeme Geçmeme İzin Vermiyor, Cevap Yok. Yemeksepeti üzerinden uzun süredir restoran işletmesi olarak hizmet veriyoruz. Ancak artan komisyon oranları, müşterilere yansıtılan teslimat ve ödeme bedelleri nedeniyle ciddi müşteri kaybı yaşamaktayız. Bu nedenle kendi kuryemize geçmek istiyoruz ancak izin verilmiyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti Kurye Ve Komisyon Sorunları Nedeniyle Mağduriyet Yaşıyorum',
+    description: 'Samsunda bir çiğ köfteci olarak her esnaf gibi yemek sepetine üyeyim fakat ilk günden itibaren Yemek Sepeti expres kuryesini kullanmaktayım! Komisyonların ve sistemdeki kuryelerinden sürekli memnuniyetsizlik yaşamama rağmen ve de sözleşmede yazmayan maddelerden alakasız sürekli bir bahane uydurarak kendi kuryeme geçiş yapmama izin vermiyorlar.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti\'nde Yüksek Komisyon Ve İlgisiz Müşteri Hizmeti Nedeniyle Yaşanan Maddi Kayıp',
+    description: 'Yemeksepeti Aşırı Komisyon Kesintisi ve İlgisizlik! 190 TL\'lik bir siparişte bana sadece 58 TL kaldı! Yemeksepeti\'nde işletmeci olarak uzun süredir bulunmama rağmen, %38 olması gereken kesinti oranı hiçbir zaman tutmadı. Komisyon üstüne komisyon, indirim üstüne indirim kesiliyor. Tüm siparişlerde bu durum devam ediyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Express Teslimattan Çıkış Talebim Reddediliyor Mağdur Ediliyorum',
+    description: 'Yemeksepeti Restoranıyım Antalya\'da 2 haftadır express teslimattan çıkmak istiyorum. Her gün arayıp talep oluşturuyorum fakat sırf daha yüksek komisyon almak için benim restoranımı çıkarmıyorlar. Kendi kuryelerime boşuna para ödüyorum onların da parasını faturalandırıp dava açmayı düşünüyorum',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Komisyon Kesintileri Ve Müşteri Hizmetlerinde Çözüm Bulamama Sorunu',
+    description: 'Yemeksepeti kuryesine geçiş için sözleşme imzaladım, onay maili geldi. Daha sonra gelen siparişlerde kuryeler gelmedi ve benim götürmem gerektiği söylendi. Kendim götürmüş olmama rağmen yaklaşık %40 komisyon kestiler. Bir haftadır sistemimi kapalı tutuyorum. Müşteri hizmetlerine bağlanmak çok zor; bağlanınca da çözüm sunmuyorlar.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti\'nde Devir İşlemleri Aylardır Tamamlanmıyor, İletişim Yok',
+    description: 'Restoranlardan yüzde 40 komisyon alıp, Türkiye\'de belki milyonlarca işletmenin ortağı bile değil, patron koltuğuna geçen Yemek Sepeti\'nin her alanda restoranları görmezden gelmesine, ulaşılabilirlik ve iletişim sorunlarına (sadece mail, telefonda ulaşmak mümkün değil, maile de lütfedip dönerlerse) aylardır şikayetçiyim.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Komisyonları Kazancımı Eritiyor!',
+    description: 'İşletme sahibi olarak 4 aydır Yemeksepeti ile çalışıyorum fakat komisyon oranları çok fazla. Resimde görmüş olduğunuz şekilde satış yapmışım: 6.720 TL, bana kalan ise sadece 1.600 TL. Bu nasıl bir adalet, bu nasıl bir sistem? Bana ortak mı, işletmeyi satın mı aldı?',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Taleplere Dönüş Yapmıyor Restoranlar Mağdur Oluyor',
+    description: 'Yemeksepeti şirketi hiçbir şekilde mail olarak gönderilen taleplere karşılık vermiyor. Çağrı merkezinden yapılan görüşmelerde oluşturulan taleplere de ne arama ne görüşme olarak dönüş sağlanmamıştır. Bu süreçte restoranım mağduriyet yaşamakta ve çözüm odaklı muhatap bulamamaktadır. Kurye sistemini değiştirmek istiyoruz ancak izin verilmiyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Açılış Süreci Ve Yüksek Komisyonlarla Mağduriyet Yaşatıyor',
+    description: 'yemeksepeti.com müşteriyi umursamıyor. Açılışı için 1 ay beklettiler 1 ay süren sistemlerinde goweb e giremiyorum. Şifre yenileme mesajı gelmiyor. Arıyorum kayıt oluşturalım bey efen deniliyor. Tamam kayıt oluşturun. Diyoruz eee aradan günler geçiyor yine arayan soran yok. Çözüm yok ilgi alaka yok. Komisyonlar çok yüksek.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Komisyon Kesintisi Nedeniyle Eksik Ödeme',
+    description: 'Merhaba, Yemeksepeti üzerinden işletmem ile satış yapmaktaydım. İki hafta içerisinde 15.000 liralık satış yaptım ve bunun sadece hesabıma yatan 1.500 TL tutarını görüntüledim. Yemeksepeti ekipleri ile iletişime geçtiğimde, bana geri kalan tutarın komisyon kesintisi olduğunu söylediler.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti Yüksek Komisyon Ve Kurye Geçişinde Mağduriyet',
+    description: 'Alanya\'da Tostladin işletme sahibiyim. Yemek Sepeti ile 3 yıl boyunca kendi kuryem ile çalıştıktan sonra, Yemek Sepeti bölge sorumlusu F***** Bey tarafından Yemek Sepeti\'nin kurye hizmetini almaya başladım. Bu geçişi yaparken kendisine defalarca, istediğimde ya da memnun kalmadığım takdirde kendi kuryeme geri dönebileceğimi söyledim ancak şimdi izin verilmiyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti\'nde Yüksek Komisyon Ve Bilgilendirme Eksikliği',
+    description: 'Yemek Sepeti\'ne üye oldum, üç hafta geçti. 5.665 TL\'lik satıştan hesabıma yatacak olan ücret yaklaşık 1.400 TL civarında. Joker kampanyasına girerken herhangi bir bilgilendirme yapılmıyor, anlaşmada Joker kesintisi yer almıyor. Yemek Sepeti\'ne girerken yalnızca %34 komisyon olduğu belirtiliyor. Ancak gerçekte çok daha fazla kesinti yapılıyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemek Sepeti Joker Komisyonları İşletmemi Zarara Uğratıyor',
+    description: 'İşletmemde Yemek Sepeti hizmetini kullanıyorum fakat Joker adı altında yüksek komisyonlar kesiliyor ve iki gündür işletmem zarar ediyor. Konuyla ilgili destek alamıyorum. Müşteri hizmetlerini aradığımda, mail atmam gerektiği söyleniyor. Mail atıyorum fakat geri dönüş alamıyorum. Ancak her gün zarar etmeye devam ediyorum.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Muhasebe Ve Reklam Gelirlerinde Haksız Kesinti Ve Eksik Ödeme Sorunu',
+    description: 'Adres: Aydınlı, Gürpınar CD. No:** 34953 Tuzla/İstanbul. Always Şube sahibiyim, Yemeksepeti Motokurye Partner kullanıcısıyım. Yemeksepeti Muhasebe Birimi, hak ediş faturalarımı eksik yatırıyor. Joker kullanımı ve öne çıkan reklam gelirleri hizmetlerini kapatmama rağmen, bu hizmetler kasıtlı olarak tekrar açılıyor ve kesintiler yapılıyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Yemeksepeti Joker Kampanyası Küçük Esnafı Zorluyor!',
+    description: 'Yemeksepeti\'ne kayıtlı bir restoranım var ve Joker adı altında sattığımız ürünlerin yaklaşık %70\'ini kendisi alıyor, tüm maliyeti karşılayan restoranlara ise %30 gibi oldukça düşük bir ödeme yapıyorlar. Acilen bu sorunun düzeltilmesi gerekiyor. Bu uygulamalar küçük esnafı batırmaya yönelik çabalar gibi görünüyor.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Joker Bedeliyle Gizli Komisyon Kesintisi: Adil Ticaret İhlali',
+    description: 'Yemeksepeti platformunda uygulanan "Joker bedeli" adı altındaki kesinti, kabul ettiğimiz %34 + KDV komisyon oranının dışında, kârdan %50 oranında ek bir kesintiyle sonuçlanmaktadır. Bu uygulama, başta belirtilen ticari koşulların dışındadır ve işletmemiz açısından büyük bir gelir kaybına yol açmaktadır.',
+    category: 'restaurant',
+    platform: 'Yemeksepeti',
+  },
+  // SAYFA 2 - MÜŞTERİ ŞİKAYETLERİ
+  {
+    title: 'Yemeksepeti\'nde Değişen Ödeme Seçenekleri Ve Ek Ücret Şikayeti',
+    description: 'Yemeksepeti ile ilgili şikayetim var. Önceleri sipariş verirken ödeme seçenekleri arasında kapıda nakit ödeme ve kredi kartıyla ödeme seçenekleri varken, kapıda ödeme seçeneğiyle güzelce alıyorduk. Enflasyon sebebiyle ve her şeyin fiyatlarının aşırı artmaya başlamasından ötürü kapıda nakit ödemeyi kaldırdılar ve ek ücret eklediler.',
+    category: 'customer',
+    platform: 'Yemeksepeti',
+  },
+  {
+    title: 'Kapıda Ödeme İçin Alınan Ekstra Ücretin Gerekçesi Anlaşılmıyor',
+    description: 'Yemek Sepeti, kapıda ödemede ekstra para almaya başlamış. Hangi hizmeti veriyorsunuz da para alıyorsunuz? Yemek yemek için parasını ödemek yetmiyor, bir de ödemeyi yapabilmek için ayrıca para isteniyor. Bu para kime gidiyor, kim alıyor, kim ne gibi bir hizmet veriyor da bu parayı hak ediyor? Bu, insanları mağdur eden bir uygulama.',
+    category: 'customer',
+    platform: 'Yemeksepeti',
   },
 ]
 
