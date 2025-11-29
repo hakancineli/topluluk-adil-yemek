@@ -9,6 +9,29 @@ const ComplaintForm = () => {
   const { addComplaint, platforms } = useStore()
   const { showSuccess, showError } = useNotifications()
   
+  // Sabit platform listesi - tüm popüler yemek sipariş platformları
+  const allPlatforms = [
+    'Yemeksepeti',
+    'GetirYemek',
+    'Trendyol Yemek',
+    'Banabi',
+    'Migros Yemek',
+    'CarrefourSA Yemek',
+    'Yemek.com',
+    'Siparişim',
+    'Yemek Diyarı',
+    'Yemek Kapında',
+    'Yemeksepeti Go',
+    'Getir',
+    'Trendyol Go',
+    'Diğer'
+  ]
+  
+  // Store'daki platformları ve sabit listeyi birleştir (benzersiz ve sıralı)
+  const availablePlatforms = Array.from(
+    new Set([...allPlatforms, ...platforms.map(p => p.name)])
+  ).sort()
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -197,9 +220,9 @@ const ComplaintForm = () => {
             }`}
           >
             <option value="">Platform seçin...</option>
-            {platforms.map((platform) => (
-              <option key={platform.id} value={platform.name}>
-                {platform.name}
+            {availablePlatforms.map((platformName) => (
+              <option key={platformName} value={platformName}>
+                {platformName}
               </option>
             ))}
           </select>
