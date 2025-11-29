@@ -41,20 +41,20 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     }
 
     if (this.token) {
       headers['Authorization'] = `Bearer ${this.token}`
     }
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
-      })
+      try {
+        const response = await fetch(url, {
+          ...options,
+          headers: headers as HeadersInit,
+        })
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({ message: 'Bir hata oluştu' }))

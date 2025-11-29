@@ -1,4 +1,4 @@
-import { Complaint, BulkComplaint, ComplaintCategory } from '../types'
+import { Complaint, BulkComplaint } from '../types'
 
 /**
  * Benzer şikayetleri tespit eder ve gruplar

@@ -23,8 +23,7 @@ const OfficialComplaintModal = ({ complaint, onClose }: OfficialComplaintModalPr
     title: complaint.title,
     description: complaint.description,
   })
-  const [error, setError] = useState<string | null>(null)
-  const [eDevletUserInfo, setEDevletUserInfo] = useState<{
+  const [eDevletUserInfo] = useState<{
     tcKimlik: string
     adSoyad: string
     email: string
@@ -103,13 +102,6 @@ const OfficialComplaintModal = ({ complaint, onClose }: OfficialComplaintModalPr
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          {/* Hata Mesajı */}
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-              {error}
-            </div>
-          )}
-
           {/* Kurum Seçimi */}
           <div>
             <h3 className="text-xl font-semibold text-gray-900 mb-4">

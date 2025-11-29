@@ -48,7 +48,7 @@ export const officialInstitutionConfigs: Record<OfficialInstitution, OfficialIns
  * E-devlet giriş URL'i oluşturur
  * Güvenli yöntem: E-devlet ana sayfasına yönlendirir
  */
-export const getEDevletAuthUrl = (redirectUri: string, state?: string): string => {
+export const getEDevletAuthUrl = (_redirectUri: string, _state?: string): string => {
   // E-devlet ana sayfasına yönlendir
   // Kullanıcı burada giriş yapar ve sonra ilgili hizmeti arar
   // OAuth entegrasyonu için resmi developer portal kaydı gereklidir
@@ -224,8 +224,8 @@ const prepareFormDataForInstitution = (
  */
 const buildInstitutionUrl = (
   baseUrl: string,
-  formData: Record<string, string>,
-  institution: OfficialInstitution
+  _formData: Record<string, string>,
+  _institution: OfficialInstitution
 ): string => {
   // E-devlet sayfaları için özel işlem
   if (baseUrl.includes('turkiye.gov.tr')) {
@@ -236,8 +236,8 @@ const buildInstitutionUrl = (
 
   // Diğer kurumlar için URL parametreleri ekle
   const params = new URLSearchParams()
-  Object.entries(formData).forEach(([key, value]) => {
-    if (value) {
+  Object.entries(_formData).forEach(([key, value]) => {
+    if (value && typeof value === 'string') {
       params.append(key, value)
     }
   })
@@ -268,7 +268,7 @@ export const handleEDevletCallback = (code: string, state: string): Promise<stri
 /**
  * Kullanıcı bilgilerini e-devlet'ten alır
  */
-export const getEDevletUserInfo = async (token: string): Promise<{
+export const getEDevletUserInfo = async (_token: string): Promise<{
   tcKimlik: string
   adSoyad: string
   email: string

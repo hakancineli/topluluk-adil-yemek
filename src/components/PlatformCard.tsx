@@ -56,18 +56,6 @@ const PlatformCard = ({ platform, complaints }: PlatformCardProps) => {
     }
   }
 
-  const getCategoryLabel = (category: ComplaintCategory) => {
-    switch (category) {
-      case 'restaurant':
-        return 'Restoran'
-      case 'customer':
-        return 'Müşteri'
-      case 'courier':
-        return 'Kurye'
-      default:
-        return category
-    }
-  }
 
   return (
     <div

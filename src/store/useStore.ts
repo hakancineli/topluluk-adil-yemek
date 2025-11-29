@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { Complaint, Platform, OfficialComplaint, BulkComplaint } from '../types'
 import { complaintApi } from '../services/complaintApi'
-import { platformApi } from '../services/platformApi'
 
 interface StoreState {
   complaints: Complaint[]
@@ -105,7 +104,7 @@ const initialPlatforms = createPlatformsFromComplaints(mockComplaints)
 
 export const useStore = create<StoreState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       complaints: mockComplaints,
       platforms: initialPlatforms,
       officialComplaints: [],

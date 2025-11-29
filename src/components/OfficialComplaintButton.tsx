@@ -1,17 +1,14 @@
 import { useState } from 'react'
-import { Complaint, OfficialInstitution } from '../types'
-import { officialComplaintService } from '../services/officialComplaintService'
-import { useStore } from '../store/useStore'
+import { Complaint } from '../types'
 import OfficialComplaintModal from './OfficialComplaintModal'
 
 interface OfficialComplaintButtonProps {
-  complaintId: string
+  complaintId?: string
   complaintData: Complaint
   className?: string
 }
 
 const OfficialComplaintButton = ({
-  complaintId,
   complaintData,
   className = '',
 }: OfficialComplaintButtonProps) => {

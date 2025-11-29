@@ -1,11 +1,10 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useStore } from '../store/useStore'
 import {
   findSimilarComplaints,
   createBulkComplaint,
   generateBulkComplaintSummary,
-  recommendInstitutionForBulk,
 } from '../utils/bulkComplaintUtils'
 import { Complaint, BulkComplaint, OfficialInstitution } from '../types'
 import { officialComplaintService } from '../services/officialComplaintService'
@@ -13,7 +12,7 @@ import { officialComplaintService } from '../services/officialComplaintService'
 const BulkComplaintPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { complaints, bulkComplaints, addBulkComplaint, updateBulkComplaintStatus } = useStore()
+  const { complaints, addBulkComplaint, updateBulkComplaintStatus } = useStore()
 
   const [selectedPlatform, setSelectedPlatform] = useState<string>(
     location.state?.platform || ''
@@ -84,13 +83,13 @@ const BulkComplaintPage = () => {
   }
 
   const handleSubmitBulk = async (bulk: BulkComplaint) => {
-    const bulkComplaints = filteredComplaints.filter((c) =>
+    const bulkComplaintsList = filteredComplaints.filter((c) =>
       bulk.complaintIds.includes(c.id)
     )
 
     // İlk şikayeti temel alarak resmi şikayet oluştur
-    const baseComplaint = bulkComplaints[0]
-    const summary = generateBulkComplaintSummary(bulk, bulkComplaints)
+    const baseComplaint = bulkComplaintsList[0]
+    const summary = generateBulkComplaintSummary(bulk, bulkComplaintsList)
 
     // Özet ile birleştirilmiş şikayet oluştur
     const combinedComplaint: Complaint = {

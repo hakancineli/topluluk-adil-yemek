@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getEDevletAuthUrl, handleEDevletCallback, getEDevletUserInfo } from '../services/realOfficialComplaintService'
+import { getEDevletAuthUrl } from '../services/realOfficialComplaintService'
 
 interface EDevletLoginProps {
   onSuccess: (userInfo: {

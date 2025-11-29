@@ -1,5 +1,4 @@
 import { useStore } from '../store/useStore'
-import { useNotifications } from '../hooks/useNotifications'
 import OfficialComplaintCard from '../components/OfficialComplaintCard'
 import { OfficialComplaintStatus } from '../types'
 

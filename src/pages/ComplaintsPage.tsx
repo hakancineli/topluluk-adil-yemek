@@ -67,19 +67,6 @@ const ComplaintsPage = () => {
     return filtered
   }, [complaints, searchQuery, selectedPlatform, selectedCategory, sortBy])
 
-  const getCategoryLabel = (category: ComplaintCategory | 'all') => {
-    if (category === 'all') return 'Tümü'
-    switch (category) {
-      case 'restaurant':
-        return 'Restoran'
-      case 'customer':
-        return 'Müşteri'
-      case 'courier':
-        return 'Kurye'
-      default:
-        return category
-    }
-  }
 
   return (
     <div className="space-y-6">

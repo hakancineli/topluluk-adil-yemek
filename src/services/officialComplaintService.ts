@@ -1,4 +1,4 @@
-import { Complaint, OfficialComplaint, OfficialInstitution, OfficialComplaintStatus } from '../types'
+import { Complaint, OfficialInstitution, OfficialComplaintStatus } from '../types'
 
 /**
  * Rekabet Kurumu API Simülasyonu
@@ -8,7 +8,7 @@ export class OfficialComplaintService {
   /**
    * Rekabet Kurumu'na şikayet gönderir
    */
-  async submitToRekabetKurumu(complaintData: Complaint): Promise<{
+  async submitToRekabetKurumu(_complaintData: Complaint): Promise<{
     success: boolean
     officialId: string
     message?: string

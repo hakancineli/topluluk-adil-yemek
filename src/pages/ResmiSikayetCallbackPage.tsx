@@ -54,7 +54,7 @@ const ResmiSikayetCallbackPage = () => {
         }
 
         // Resmi kurum sayfasına yönlendir
-        const targetUrl = redirectToOfficialInstitution(complaint, institution, eDevletToken)
+        redirectToOfficialInstitution(complaint, institution, eDevletToken)
 
         // Başarı mesajı göster
         setTimeout(() => {

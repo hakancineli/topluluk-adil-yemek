@@ -95,7 +95,7 @@ export const exportPlatformReport = (
  * Tüm platformlar için toplu rapor oluşturur
  */
 export const exportAllPlatformsReport = (
-  platforms: Platform[],
+  _platforms: Platform[],
   complaints: Complaint[],
   format: 'json' | 'csv' = 'json'
 ) => {
