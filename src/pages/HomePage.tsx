@@ -20,9 +20,14 @@ const HomePage = () => {
         
         if (apiComplaints.length > 0) {
           // En yeni şikayetleri önce göster
-          const sortedComplaints = apiComplaints.sort(
-            (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-          )
+          const sortedComplaints = apiComplaints
+            .filter(c => c.createdAt) // createdAt olmayanları filtrele
+            .sort((a, b) => {
+              // Güvenli Date karşılaştırması
+              const dateA = a.createdAt instanceof Date ? a.createdAt : new Date(a.createdAt)
+              const dateB = b.createdAt instanceof Date ? b.createdAt : new Date(b.createdAt)
+              return dateB.getTime() - dateA.getTime()
+            })
           
           setComplaints(sortedComplaints)
           
@@ -71,9 +76,19 @@ const HomePage = () => {
   
   // Son 5 şikayeti göster (en yeni önce) - useMemo ile cache'le
   const recentComplaints = useMemo(
-    () => [...complaints]
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice(0, 5),
+    () => {
+      if (complaints.length === 0) return []
+      
+      return [...complaints]
+        .filter(c => c.createdAt) // createdAt olmayanları filtrele
+        .sort((a, b) => {
+          // Güvenli Date karşılaştırması
+          const dateA = a.createdAt instanceof Date ? a.createdAt : new Date(a.createdAt)
+          const dateB = b.createdAt instanceof Date ? b.createdAt : new Date(b.createdAt)
+          return dateB.getTime() - dateA.getTime()
+        })
+        .slice(0, 5)
+    },
     [complaints]
   )
 
@@ -112,12 +127,17 @@ const HomePage = () => {
       <div className="bg-white p-8 rounded-lg shadow">
         <h2 className="text-2xl font-bold mb-4">Son Şikayetler</h2>
         <div className="space-y-4">
-          {recentComplaints.map((complaint) => (
-            <div key={complaint.id} className="border-l-4 border-primary-500 pl-4 py-2">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-semibold text-gray-900">{complaint.title}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{complaint.description.substring(0, 100)}...</p>
+          {recentComplaints.length === 0 ? (
+            <p className="text-gray-500 text-center py-8">Henüz şikayet bulunmuyor.</p>
+          ) : (
+            recentComplaints.map((complaint) => (
+              <div key={complaint.id} className="border-l-4 border-primary-500 pl-4 py-2">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{complaint.title || 'Başlıksız Şikayet'}</h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {complaint.description ? `${complaint.description.substring(0, 100)}...` : 'Açıklama yok'}
+                    </p>
                   <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                     <span>{complaint.platform}</span>
                     <span>•</span>
@@ -136,7 +156,8 @@ const HomePage = () => {
                 </span>
               </div>
             </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
