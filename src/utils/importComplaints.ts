@@ -522,22 +522,35 @@ export async function importSikayetvarComplaints(): Promise<void> {
   
   // Mevcut şikayetleri kontrol et - duplicate önlemek için
   const existingComplaints = await complaintApi.getAll()
-  const existingTitles = new Set(existingComplaints.map(c => c.title.toLowerCase().trim()))
+  
+  // Daha güçlü duplicate kontrolü: title + description + platform kombinasyonu
+  const existingComplaintsSet = new Set(
+    existingComplaints.map(c => {
+      const title = (c.title || '').toLowerCase().trim()
+      const desc = (c.description || '').toLowerCase().trim().substring(0, 50) // İlk 50 karakter
+      const platform = (c.platform || '').toLowerCase().trim()
+      return `${title}|${desc}|${platform}`
+    })
+  )
   
   let addedCount = 0
   let skippedCount = 0
   
   for (const complaint of sikayetvarComplaints) {
-    // Duplicate kontrolü - aynı başlık varsa ekleme
-    const normalizedTitle = complaint.title.toLowerCase().trim()
-    if (existingTitles.has(normalizedTitle)) {
+    // Duplicate kontrolü - title + description + platform kombinasyonu
+    const title = (complaint.title || '').toLowerCase().trim()
+    const desc = (complaint.description || '').toLowerCase().trim().substring(0, 50)
+    const platform = (complaint.platform || '').toLowerCase().trim()
+    const complaintKey = `${title}|${desc}|${platform}`
+    
+    if (existingComplaintsSet.has(complaintKey)) {
       skippedCount++
       continue
     }
     
     try {
       await complaintApi.create(complaint)
-      existingTitles.add(normalizedTitle) // Eklenen şikayeti set'e ekle
+      existingComplaintsSet.add(complaintKey) // Eklenen şikayeti set'e ekle
       addedCount++
       if (addedCount % 10 === 0) {
         console.log(`[importSikayetvarComplaints] ${addedCount}/${sikayetvarComplaints.length} şikayet eklendi...`)

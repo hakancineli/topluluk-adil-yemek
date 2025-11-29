@@ -1,10 +1,24 @@
 import { importSikayetvarComplaints } from './importComplaints'
+import { removeDuplicateComplaints } from './removeDuplicates'
 
 /**
  * Uygulama başlangıcında şikayetleri yükler
  * Şikayetvar'dan alınan gerçek şikayetleri ekler
  */
 export async function initializeComplaints() {
+  // Önce duplicate'leri temizle (sadece bir kez)
+  const duplicateCleanupDone = localStorage.getItem('duplicate-cleanup-done')
+  if (!duplicateCleanupDone) {
+    try {
+      const result = await removeDuplicateComplaints()
+      if (result.removed > 0) {
+        console.log(`[initializeComplaints] ${result.removed} duplicate şikayet temizlendi`)
+      }
+      localStorage.setItem('duplicate-cleanup-done', 'true')
+    } catch (error) {
+      console.error('[initializeComplaints] Duplicate temizleme hatası:', error)
+    }
+  }
   // LocalStorage'da şikayetler varsa kontrol et
   // MockApiClient storage key: 'adil-yemek-api'
   // Endpoint '/api/complaints' -> storage key: 'complaints'
@@ -20,8 +34,9 @@ export async function initializeComplaints() {
       
       // Eğer zaten yeterli sayıda şikayet varsa (90+), tekrar ekleme
       // 93 = Şikayetvar'dan eklenen şikayet sayısı
-      if (existingCount >= 90) {
-        console.log(`[initializeComplaints] Şikayetler zaten yüklü (${existingCount} adet), tekrar eklenmeyecek.`)
+      // Ama duplicate kontrolü yapılacak, bu yüzden sadece çok fazla varsa (200+) durdur
+      if (existingCount >= 200) {
+        console.log(`[initializeComplaints] Çok fazla şikayet var (${existingCount} adet), duplicate kontrolü yapılmadan durduruluyor.`)
         return
       }
     } catch (e) {
