@@ -162,23 +162,50 @@ class MockApiClient {
     return new Promise((resolve) => {
       setTimeout(() => {
         const storage = this.getStorage()
-        const key = endpoint.replace('/api/', '')
-        const collection = storage[key] || []
+        // Endpoint formatı: /api/complaints/123 veya /api/users/456
+        const parts = endpoint.split('/').filter(p => p) // Boş string'leri filtrele
+        // parts = ['api', 'complaints', '123'] veya ['api', 'users', '456']
+        
+        if (parts.length >= 3 && parts[0] === 'api') {
+          const key = parts[1] // 'complaints' veya 'users'
+          const id = parts[2] // '123' veya '456'
+          const collection = storage[key] || []
 
-        const index = collection.findIndex((item: any) => item.id === data.id)
-        if (index !== -1) {
-          collection[index] = { ...collection[index], ...data, updatedAt: new Date().toISOString() }
-          storage[key] = collection
-          this.setStorage(storage)
-          resolve({
-            success: true,
-            data: collection[index] as T,
-          })
+          const index = collection.findIndex((item: any) => item.id === id || item.id === data?.id)
+          if (index !== -1) {
+            collection[index] = { ...collection[index], ...data, id: id || data?.id, updatedAt: new Date().toISOString() }
+            storage[key] = collection
+            this.setStorage(storage)
+            resolve({
+              success: true,
+              data: collection[index] as T,
+            })
+          } else {
+            resolve({
+              success: false,
+              error: 'Kayıt bulunamadı',
+            })
+          }
         } else {
-          resolve({
-            success: false,
-            error: 'Kayıt bulunamadı',
-          })
+          // Eski format desteği: /api/complaints gibi
+          const key = endpoint.replace('/api/', '')
+          const collection = storage[key] || []
+
+          const index = collection.findIndex((item: any) => item.id === data?.id)
+          if (index !== -1) {
+            collection[index] = { ...collection[index], ...data, updatedAt: new Date().toISOString() }
+            storage[key] = collection
+            this.setStorage(storage)
+            resolve({
+              success: true,
+              data: collection[index] as T,
+            })
+          } else {
+            resolve({
+              success: false,
+              error: 'Kayıt bulunamadı',
+            })
+          }
         }
       }, 300)
     })
