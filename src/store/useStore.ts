@@ -104,132 +104,153 @@ const initialPlatforms = createPlatformsFromComplaints(mockComplaints)
 
 export const useStore = create<StoreState>()(
   persist(
-    (set) => ({
-      complaints: mockComplaints,
-      platforms: initialPlatforms,
-      officialComplaints: [],
-      bulkComplaints: [],
-
-      addComplaint: async (complaintData) => {
-        try {
-          // API'ye kaydet
-          const newComplaint = await complaintApi.create(complaintData)
+    (set) => {
+      // Store başlatıldığında API'den şikayetleri yükle (async, arka planda)
+      complaintApi.getAll().then((apiComplaints) => {
+        if (apiComplaints.length > 0) {
+          const platformMap = new Map<string, number>()
+          apiComplaints.forEach((complaint) => {
+            const count = platformMap.get(complaint.platform) || 0
+            platformMap.set(complaint.platform, count + 1)
+          })
           
-          // Store'u güncelle
-          set((state) => {
-            const updatedComplaints = [newComplaint, ...state.complaints]
-
-            // Platform listesini güncelle
-            const platformMap = new Map<string, number>()
-            updatedComplaints.forEach((complaint) => {
-              const count = platformMap.get(complaint.platform) || 0
-              platformMap.set(complaint.platform, count + 1)
+          const platforms: Platform[] = []
+          let id = 1
+          platformMap.forEach((totalComplaints, name) => {
+            platforms.push({
+              id: id.toString(),
+              name,
+              logo: `https://via.placeholder.com/150x80?text=${encodeURIComponent(name)}`,
+              totalComplaints,
             })
+            id++
+          })
+          
+          set({ complaints: apiComplaints, platforms })
+        }
+      }).catch(console.error)
+      
+      return {
+        complaints: mockComplaints,
+        platforms: initialPlatforms,
+        officialComplaints: [],
+        bulkComplaints: [],
 
-            const updatedPlatforms = state.platforms.map((platform) => {
-              const count = platformMap.get(platform.name) || 0
-              return { ...platform, totalComplaints: count }
-            })
+        addComplaint: async (complaintData) => {
+          try {
+            // API'ye kaydet
+            const newComplaint = await complaintApi.create(complaintData)
+            
+            // Store'u güncelle
+            set((state) => {
+              const updatedComplaints = [newComplaint, ...state.complaints]
 
-            // Yeni platformlar varsa ekle
-            platformMap.forEach((totalComplaints, name) => {
-              if (!updatedPlatforms.find((p) => p.name === name)) {
-                updatedPlatforms.push({
-                  id: Date.now().toString(),
-                  name,
-                  logo: `https://via.placeholder.com/150x80?text=${encodeURIComponent(name)}`,
-                  totalComplaints,
-                })
+              // Platform listesini güncelle
+              const platformMap = new Map<string, number>()
+              updatedComplaints.forEach((complaint) => {
+                const count = platformMap.get(complaint.platform) || 0
+                platformMap.set(complaint.platform, count + 1)
+              })
+
+              const updatedPlatforms = state.platforms.map((platform) => {
+                const count = platformMap.get(platform.name) || 0
+                return { ...platform, totalComplaints: count }
+              })
+
+              // Yeni platformlar varsa ekle
+              platformMap.forEach((totalComplaints, name) => {
+                if (!updatedPlatforms.find((p) => p.name === name)) {
+                  updatedPlatforms.push({
+                    id: Date.now().toString(),
+                    name,
+                    logo: `https://via.placeholder.com/150x80?text=${encodeURIComponent(name)}`,
+                    totalComplaints,
+                  })
+                }
+              })
+
+              return {
+                complaints: updatedComplaints,
+                platforms: updatedPlatforms,
               }
             })
+          } catch (error) {
+            console.error('Şikayet eklenirken hata:', error)
+            throw error
+          }
+        },
 
-            return {
-              complaints: updatedComplaints,
-              platforms: updatedPlatforms,
-            }
-          })
-        } catch (error) {
-          console.error('Şikayet eklenirken hata:', error)
-          throw error
-        }
-      },
+        upvoteComplaint: async (id) => {
+          try {
+            const updated = await complaintApi.upvote(id)
+            set((state) => ({
+              complaints: state.complaints.map((complaint) =>
+                complaint.id === id ? updated : complaint
+              ),
+            }))
+          } catch (error) {
+            console.error('Oy verme hatası:', error)
+          }
+        },
 
-      upvoteComplaint: async (id) => {
-        try {
-          const updated = await complaintApi.upvote(id)
+        updateComplaintStatus: async (id, status) => {
+          try {
+            const updated = await complaintApi.updateStatus(id, status)
+            set((state) => ({
+              complaints: state.complaints.map((complaint) =>
+                complaint.id === id ? updated : complaint
+              ),
+            }))
+          } catch (error) {
+            console.error('Durum güncelleme hatası:', error)
+          }
+        },
+
+        addOfficialComplaint: (officialComplaint) => {
           set((state) => ({
-            complaints: state.complaints.map((complaint) =>
-              complaint.id === id ? updated : complaint
+            officialComplaints: [...state.officialComplaints, officialComplaint],
+          }))
+        },
+
+        updateOfficialComplaintStatus: (id, status) => {
+          set((state) => ({
+            officialComplaints: state.officialComplaints.map((complaint) =>
+              complaint.id === id
+                ? { ...complaint, status, lastUpdated: new Date() }
+                : complaint
             ),
           }))
-        } catch (error) {
-          console.error('Oy verme hatası:', error)
-        }
-      },
+        },
 
-      updateComplaintStatus: async (id, status) => {
-        try {
-          const updated = await complaintApi.updateStatus(id, status)
+        addBulkComplaint: (bulkComplaint) => {
           set((state) => ({
-            complaints: state.complaints.map((complaint) =>
-              complaint.id === id ? updated : complaint
+            bulkComplaints: [...state.bulkComplaints, bulkComplaint],
+          }))
+        },
+
+        addComplaintToBulk: (bulkComplaintId, complaintId) => {
+          set((state) => ({
+            bulkComplaints: state.bulkComplaints.map((bulk) =>
+              bulk.id === bulkComplaintId
+                ? {
+                    ...bulk,
+                    complaintIds: [...bulk.complaintIds, complaintId],
+                    totalComplaints: bulk.totalComplaints + 1,
+                  }
+                : bulk
             ),
           }))
-        } catch (error) {
-          console.error('Durum güncelleme hatası:', error)
-        }
-      },
+        },
 
-      addOfficialComplaint: (officialComplaint) => {
-        set((state) => ({
-          officialComplaints: [...state.officialComplaints, officialComplaint],
-        }))
-        // API'ye kaydet (async, hata yönetimi ile)
-        // TODO: officialComplaintApi.create(officialComplaint)
-      },
-
-      updateOfficialComplaintStatus: (id, status) => {
-        set((state) => ({
-          officialComplaints: state.officialComplaints.map((complaint) =>
-            complaint.id === id
-              ? { ...complaint, status, lastUpdated: new Date() }
-              : complaint
-          ),
-        }))
-        // API'ye kaydet (async, hata yönetimi ile)
-        // TODO: officialComplaintApi.updateStatus(id, status)
-      },
-
-      addBulkComplaint: (bulkComplaint) => {
-        set((state) => ({
-          bulkComplaints: [...state.bulkComplaints, bulkComplaint],
-        }))
-        // API'ye kaydet (async, hata yönetimi ile)
-        // TODO: bulkComplaintApi.create(bulkComplaint)
-      },
-
-      addComplaintToBulk: (bulkComplaintId, complaintId) => {
-        set((state) => ({
-          bulkComplaints: state.bulkComplaints.map((bulk) =>
-            bulk.id === bulkComplaintId
-              ? {
-                  ...bulk,
-                  complaintIds: [...bulk.complaintIds, complaintId],
-                  totalComplaints: bulk.totalComplaints + 1,
-                }
-              : bulk
-          ),
-        }))
-      },
-
-      updateBulkComplaintStatus: (id, status) => {
-        set((state) => ({
-          bulkComplaints: state.bulkComplaints.map((bulk) =>
-            bulk.id === id ? { ...bulk, status } : bulk
-          ),
-        }))
-      },
-    }),
+        updateBulkComplaintStatus: (id, status) => {
+          set((state) => ({
+            bulkComplaints: state.bulkComplaints.map((bulk) =>
+              bulk.id === id ? { ...bulk, status } : bulk
+            ),
+          }))
+        },
+      }
+    },
     {
       name: 'adil-yemek-store',
       storage: createJSONStorage(() => localStorage),
@@ -242,4 +263,3 @@ export const useStore = create<StoreState>()(
     }
   )
 )
-
