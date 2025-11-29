@@ -6,7 +6,8 @@ import { complaintApi } from '../services/complaintApi'
  * Kaynak: 
  * - https://www.sikayetvar.com/trendyol-yemek/komisyon (4 sayfa, 93 şikayet)
  * - https://www.sikayetvar.com/yemeksepeti/komisyon (2 sayfa, 44 şikayet)
- * Toplam: 137 şikayet
+ * - https://www.sikayetvar.com/getiryemek (1 sayfa, 25 şikayet)
+ * Toplam: 162 şikayet
  */
 const sikayetvarComplaints: Omit<Complaint, 'id' | 'createdAt' | 'upvotes' | 'status'>[] = [
   // SAYFA 1 - RESTORAN ŞİKAYETLERİ
@@ -789,6 +790,151 @@ const sikayetvarComplaints: Omit<Complaint, 'id' | 'createdAt' | 'upvotes' | 'st
     description: 'Yemek Sepeti, kapıda ödemede ekstra para almaya başlamış. Hangi hizmeti veriyorsunuz da para alıyorsunuz? Yemek yemek için parasını ödemek yetmiyor, bir de ödemeyi yapabilmek için ayrıca para isteniyor. Bu para kime gidiyor, kim alıyor, kim ne gibi bir hizmet veriyor da bu parayı hak ediyor? Bu, insanları mağdur eden bir uygulama.',
     category: 'customer',
     platform: 'Yemeksepeti',
+  },
+  // GETİRYEMEK ŞİKAYETLERİ BAŞLANGICI
+  {
+    title: 'Kupon Kullanılamadı, İptal Talebim Dikkate Alınmadı Ve Müşteri Güveni Sarsıldı',
+    description: '29.11.2025 tarihinde saat 23:40\'ta Getir Yemek üzerinden yaklaşık 495 TL tutarında bir sipariş verdim ve 150 TL indirim sağlayan kuponumu kullanmak istedim. Kuponu sipariş sırasında tanımlamama rağmen sistemde bir bug sebebiyle kuponum işlememiş göründü. Bunun üzerine 23:41\'de canlı desteğe bağlandım ancak hiçbir çözüm sunulmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'GetirYemek Yanlış Siparişimi İptal Etmedi, Ücretimi İade Etmiyor',
+    description: '22 Kasım\'da GetirYemek üzerinden yanlışlıkla bir sipariş verdim. Hatanın farkına varır varmaz, yaklaşık 1 dakika bile geçmeden canlı destek üzerinden Getir ile iletişime geçip siparişimde yanlışlık olduğunu, iptal edilmesini istediğimi belirttim. Ancak talebime rağmen siparişi iptal etmediler. Canlı destek ile görüşmemde ücret iadesi yapılacağı söylendi ancak hala iade edilmedi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Siparişim Gecikti, Çözüm Sunulmadı, Kurye De Saygısızdı',
+    description: '29 Kasım Cumartesi günü saat 19:50\'de Getir üzerinden Maydanoz Döner\'den iki dürümlük yemek siparişi verdim. Ev ile restoran arasındaki mesafe en fazla 1,5 km olmasına rağmen siparişim 1 saat 20 dakika boyunca teslim edilmedi. Bu süreçte Getir müşteri hizmetlerine yazılı olarak ulaştım ve siparişin durumunu sordum ancak hiçbir çözüm sunulmadı. Kurye geldiğinde de saygısız bir tutum sergiledi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Yanlış Siparişe Anında Müdahaleye Rağmen Ücret İadesi Yapılmadı',
+    description: '29 Kasım tarihinde Getir Yemek üzerinden Meri Paşa adlı restorandan yaklaşık 500 TL tutarında bir sipariş verdim, ödemeyi kredi kartı ile gerçekleştirdim. Siparişte yanlış ürün verdiğimi fark eder etmez, anında hem müşteri hizmetlerini aradım hem de restorana ulaştım; ayrıca uygulama üzerinden de müşteri hizmetlerine yazdım. Ancak hiçbir şekilde ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Teslim Edilmeyen Sipariş İçin Ücret İadesi Ve Müşteri Hizmetlerinde Yaşanan İletişim Sorunu',
+    description: '29.11.2025 tarihinde saat 17.35 civarında Getir Yemek üzerinden Mc Donald\'s Mezitli şubesinden yaklaşık 342 TL tutarında sipariş verdim. Aradan 1,5 saat geçmesine rağmen ne restoran ne de kuryeden herhangi bir arama almadım. Sipariş durumunu öğrenmek için müşteri hizmetlerini aradığımda, kuryeye ulaşılamadığı söylendi ve siparişim teslim edilmedi. Ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Sipariş Gelmedi, Para İadesi Yapılmadı, Mağdur Edildim',
+    description: '28.11.2025 tarihinde saat 12:56\'da çalıştığım ofise Getir Yemek üzerinden kurumsal şirket adresime sipariş verdim. Bir süre sonra 0 (850) 532 50 50 numaralı hattan arandım, sesli yanıt sistemi "Siparişi size ulaştıramadık" dedi ve uygulamada siparişim "ulaştırılamadı" olarak işaretlenmişti. Bunun üzerine müşteri hizmetlerine ulaştım ancak para iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Teslim Edilmemiş Sipariş İçin Muhatap Bulamıyorum',
+    description: '29 Kasım 2025 tarihinde saat 17.11\'de Getir Yemek üzerinden verdiğim siparişim, üzerinden 1 saat 20 dakikadan fazla süre geçmesine rağmen tarafıma teslim edilmedi. Buna rağmen siparişim uygulamada 18.37 itibarıyla \'teslim edildi\' olarak görünmektedir. Online kart ile ödemesini yaptığım bu siparişim için muhatap bulamıyorum ve ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Kazandığım Ödülde Hata: Güvenim Sarsıldı',
+    description: 'Getir Yemek uygulamasındaki Çark kampanyasını yaklaşık 10 gün boyunca sorunsuz bir şekilde kullandım. Ancak bugün, 100 TL Getir Yemek ödülü kazandığım çevirmede ekranda \'Bir hata oluştu\' uyarısı çıktı ve çarkı yeniden çevirmemi istedi. Günlerce hiçbir sorun olmazken, tam para ödülü kazandığım anda hata çıkması ve ödülün verilmemesi güvenimi sarsıyor.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Geç Teslimat, Soğuk Ve Eksik Ürün, Yanıltıcı Müşteri Hizmetleri: Ücret İadesi Talebim Reddedildi',
+    description: '29/11/2025 tarihinde saat 13:28\'de Getir Yemek uygulaması üzerinden Bereket Döner\'den yaklaşık 235 TL tutarında bir yemek siparişi verdim. Uygulamada teslimat süresi açıkça 13:58 olarak belirtilmiş olmasına rağmen, siparişim bu sürenin dışında ve gecikmeli şekilde tarafıma ulaştırıldı. Teslimatın zamanında yapılmaması nedeniyle yemek soğuk geldi ve eksik ürün vardı. Ücret iadesi talebim reddedildi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Geç Teslimat Ve Soğuk Yemek Nedeniyle Ücret İadesi Talebi',
+    description: '29.11.2025 tarihinde Getir Yemek uygulaması üzerinden saat 13.58\'de verdiğim siparişim, saat 15.16\'da teslim edildi. Sipariş numarası gibi bilgileri mobil uygulamada bulamadım; sanırım bu bilgileri eklemiyorlar. Sipariş sürecinde, 40. dakikada canlı destek hattına ulaştım. Önce siparişin hazırlanıp hazırlanmadığını sordum, sonra kuryenin yola çıkıp çıkmadığını öğrenmek istedim. Yemek soğuk geldi ve ücret iadesi talebim kabul edilmedi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Teslim Edilmeyen Sipariş Ve Kaybolan Kupon Mağduriyeti',
+    description: '29.11.2025 tarihinde saat 13.50 civarında Van İpekyolu bölgesinden Getir Yemek üzerinden verdiğim 67808613 numaralı siparişim, tarafıma teslim edilmediği halde uygulamada "teslim edildi" olarak işaretlendi. Kurye siparişi bana hiç getirmedi, ancak sistemde sipariş tamamlanmış gibi görünüyor. Bu sipariş için kullandığım kuponum da kayboldu ve ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Ücret İadesi Yapılmadan Siparişin Teslim Edilmemesi Ve Mağduriyet',
+    description: 'Bugün saat 13.11\'de Getir üzerinden yemek siparişi verdim. Adresim uygulamada kayıtlı ve daha önce defalarca kez aynı adresten sorunsuz şekilde sipariş verdim. Buna rağmen bu siparişte görevli kurye, adresimin sistemde görünen adresle uyuşmadığını söyleyerek yemeği getirmedi. Durumu öğrenmek için telefon açtım ancak ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Adresim Açık Olmasına Rağmen Siparişim Teslim Edilmedi Ve Ücret İadesi Yapılmadı',
+    description: '28.11.2025 tarihinde Konya Selçuklu ilçesi Kosova Mahallesi\'ndeki açık ve detaylı olarak kayıtlı adresime Getir üzerinden Belora Waffle & Magnolia\'dan 234,85 TL tutarında sipariş verdim. Adresimde belediyenin ve devletin belirlediği resmi adres bilgileri, bina numarası, kat ve daire numarasına kadar her şey açık ve net olmasına rağmen siparişim teslim edilmedi ve ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Siparişimde Çiğ Et Çıkması Nedeniyle Sağlığım Tehlikeye Girdi',
+    description: '28 Kasım günü saat 10:30–12:00 arasında Getir Yemek üzerinden Mimarsinan Mahallesi S**** T**** Camisi karşısında bulunan Kaya Hatay Döner\'den 2 adet dürüm siparişi verdim. Siparişim geldiğinde dürümlerden birinin içinden çiğ et çıktığını fark ettim. Durumu görünce sağlığımı riske atmamak için yemeği yemedim ve müşteri hizmetlerine bildirdim ancak hiçbir çözüm sunulmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Sipariş İptalinde Müşteri Mağduriyeti Ve İade Sorunu',
+    description: '29 Kasım öğlen saat 12.00 civarında Getir Yemek üzerinden Starbucks\'tan iki Frappuccino ve bir brookie siparişi verdim. Aslında yanlışlıkla iki tane Frappuccino söyledim ve aynı zamanda yanlış adresi seçtim. Siparişi düzenlemek üzereyken farkında olmadan onayladım. Siparişi oluşturur oluşturmaz, henüz hazırlanmadan iptal etmek istedim ancak iptal edilemedi ve ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Getir Uygulamasında Sipariş Hatası Ve Çözüm Eksikliği',
+    description: 'Getir uygulaması üzerinden bugün akşam saatlerinde 4 kişi için yemek siparişi verdik. Siparişi verdikten sonra uygulamada hiçbir şekilde aktif sipariş görünmediği için sistemde bir hata olduğunu düşünerek yaklaşık 1 dakika içinde aynı siparişi tekrar vermek zorunda kaldık. Sonuç olarak kapıya 8 kişilik yemek geldi ve çift ödeme yaptık. Müşteri hizmetleri ile iletişime geçtik ancak çözüm sunulmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Sipariş İptali Sonrası Para İadesi Ve Numara Güncelleme Sorunu',
+    description: 'Getir Yemek üzerinden Cajun Corner adlı restorandan 18:19\'da bir sipariş verdim. Sipariş sonrası yaklaşık 18:50 civarında, uygulamada telefon numaramı değiştirme seçeneği olmadığı için hesabımda eski numaramın kayıtlı olduğunu fark ettim. Getir, beni arayamadıklarını söyleyerek siparişi kendi kendilerine iptal ettiler. Para iadesi yapılmadı ve telefon numarası güncelleme sorunu çözülmedi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Yanlışlıkla Oluşan Siparişin İptal Edilememesi Ve Ücret İadesi Talebi',
+    description: '28.11 tarihinde saat yaklaşık 17.50 civarında Getir Yemek üzerinden Afyon Merkez\'de sipariş verirken, ürün seçimi aşamasında kayıtlı kartımdan ödeme çekildi ve sipariş yanlışlıkla oluşturuldu. Yanlışlıkla verilen bu siparişin hemen ardından Getir\'le iletişime geçtim ancak siparişin iptal edilemeyeceği söylendi. Ücret iadesi talebim kabul edilmedi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Sipariş Adrese Teslim Edilmedi, Ücret İadesi Yapılmadı Ve Kötü Müşteri Hizmeti',
+    description: 'Bugün Getir Yemek üzerinden ctr Chicken Fried Chicken & More Karabağlar şubesinden, adresimi açık ve net bir şekilde yazmama rağmen siparişim adresime getirilmedi. Siparişi kendi kendilerine iptal edip uygulamada kafalarına göre bir açıklama yazılmış ve bu süreçte muhatap bulamadım. Restoranı aradım ancak onlar da Getir\'e bağlı olduklarını söylediler. Ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'İptal Edilen Siparişimde Ücretim İade Edilmedi',
+    description: 'GetirYemek üzerinden Kahve Dünyası\'ndan az önce kartla ödeme yaparak sipariş verdim. Siparişim kısa süre içinde restoran tarafından iptal edildi ancak ücret iadesi tarafıma yapılmadı. Gerekçe olarak da ürünlerin bir daha satışa sunulamayacağı söylendi. Oysa siparişimdeki iki ürün de seri üretim, paketli ürünlerdi ve tekrar satılabilir durumdaydı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Yanlışlıkla Verilen Siparişi İptal Edememek Ve Ücret İadesi Sorunu',
+    description: 'Bugün saat 14:30 civarında Getir Yemek üzerinden yanlışlıkla bir sipariş verdim. Hemen fark edip yaklaşık 1 dakika içinde iptal etmek istedim ancak uygulama üzerinden iptal edemedim ve siparişim iptal edilmedi. Bu sipariş için kredi kartımla 280 TL ödeme yaptım. Konuyla ilgili olarak Getir müşteri hizmetlerine ulaştım ancak ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Getir Yemek Siparişimde Yanıltıcı Bilgilendirme Ve Ücret İadesi Sorunu',
+    description: '27.11.2025 tarihinde Getir Yemek üzerinden verdiğim siparişim, o an müsait olamadığım ve telefonu açamadığım için iptal edildi. İptalden sadece 2 dakika sonra geri dönüş yapmaya çalıştım fakat çağrı desteğe aktarıldı. Destekle yaptığım görüşmede, aynı siparişi tekrar verirsem benden herhangi bir ücret alınmayacağı söylendi ancak bu doğru çıkmadı ve ücret iadesi yapılmadı.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'Teslim Edilmeyen Siparişin Ücreti Halen İade Edilmedi',
+    description: '11 Kasım günü Getir Yemek üzerinden Begonvil\'den makarna siparişi verdim. Uygulamada sipariş "teslim edildi" olarak görünmesine rağmen, bana herhangi bir ürün teslim edilmedi, kapıma da hiçbir şey bırakılmadı. Durumu Getir müşteri hizmetlerine ve uygulama içi destek hattına ilettiğimde, sistemde teslim edildi olarak göründüğü için iade yapılamayacağı söylendi.',
+    category: 'customer',
+    platform: 'GetirYemek',
+  },
+  {
+    title: 'GetirYemek Panelinde Sayfa Aktivasyonu Ve Destek Sorunu',
+    description: 'Getir paneline Yablonya Cafe Restaurant işletmem adına ürünlerimi yaklaşık 1 ay önce yükledim. Üzerinden 15 günden fazla zaman geçmesine rağmen ne bir geri dönüş yapıldı ne de sayfam aktif edildi. Bu süreçte işletmem resmen beklemede kaldı ve işlerimizin akışı olumsuz etkilendi. Müşteri hizmetlerine defalarca ulaştım ancak hiçbir çözüm sunulmadı.',
+    category: 'restaurant',
+    platform: 'GetirYemek',
   },
 ]
 

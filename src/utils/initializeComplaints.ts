@@ -32,8 +32,8 @@ export async function initializeComplaints() {
       const complaints = data['complaints'] || []
       existingCount = Array.isArray(complaints) ? complaints.length : 0
       
-      // Eğer zaten yeterli sayıda şikayet varsa (130+), tekrar ekleme
-      // 137 = Şikayetvar'dan eklenen şikayet sayısı (93 Trendyol + 44 Yemeksepeti)
+      // Eğer zaten yeterli sayıda şikayet varsa (150+), tekrar ekleme
+      // 162 = Şikayetvar'dan eklenen şikayet sayısı (93 Trendyol + 44 Yemeksepeti + 25 GetirYemek)
       // Ama duplicate kontrolü yapılacak, bu yüzden sadece çok fazla varsa (200+) durdur
       if (existingCount >= 200) {
         console.log(`[initializeComplaints] Çok fazla şikayet var (${existingCount} adet), duplicate kontrolü yapılmadan durduruluyor.`)
@@ -45,8 +45,8 @@ export async function initializeComplaints() {
     }
   }
   
-  // Şikayetvar şikayetlerini ekle (137 şikayet: 93 Trendyol + 44 Yemeksepeti)
-  console.log(`[initializeComplaints] Mevcut şikayet sayısı: ${existingCount}, Şikayetvar şikayetleri (137 adet) ekleniyor...`)
+  // Şikayetvar şikayetlerini ekle (162 şikayet: 93 Trendyol + 44 Yemeksepeti + 25 GetirYemek)
+  console.log(`[initializeComplaints] Mevcut şikayet sayısı: ${existingCount}, Şikayetvar şikayetleri (162 adet) ekleniyor...`)
   await importSikayetvarComplaints()
   console.log('[initializeComplaints] Şikayetler başarıyla eklendi!')
 }
