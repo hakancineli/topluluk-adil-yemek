@@ -1,16 +1,81 @@
+import { useEffect, useState, useMemo } from 'react'
 import { useStore } from '../store/useStore'
+import { complaintApi } from '../services/complaintApi'
+import { Complaint, Platform } from '../types'
 
 const HomePage = () => {
-  const { complaints, platforms } = useStore()
+  // Store'dan sadece ihtiyaç duyulan verileri al - selector kullanarak gereksiz re-render'ları önle
+  const storeComplaints = useStore((state) => state.complaints)
+  const storePlatforms = useStore((state) => state.platforms)
+  const [complaints, setComplaints] = useState<Complaint[]>(storeComplaints)
+  const [platforms, setPlatforms] = useState(storePlatforms)
   
-  const totalComplaints = complaints.length
-  const activePlatforms = platforms.length
-  const resolvedComplaints = complaints.filter(c => c.status === 'reviewed' || c.status === 'escalated').length
+  // Şikayetleri API'den yükle ve store'u güncelle
+  useEffect(() => {
+    const loadComplaints = async () => {
+      try {
+        console.log('[HomePage] Şikayetler yükleniyor...')
+        const apiComplaints = await complaintApi.getAll()
+        console.log(`[HomePage] API'den ${apiComplaints.length} şikayet alındı`)
+        
+        if (apiComplaints.length > 0) {
+          // En yeni şikayetleri önce göster
+          const sortedComplaints = apiComplaints.sort(
+            (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+          )
+          
+          setComplaints(sortedComplaints)
+          
+          // Platform listesini güncelle
+          const platformMap = new Map<string, number>()
+          apiComplaints.forEach((complaint) => {
+            const count = platformMap.get(complaint.platform) || 0
+            platformMap.set(complaint.platform, count + 1)
+          })
+          
+          const updatedPlatforms: Platform[] = []
+          let id = 1
+          platformMap.forEach((totalComplaints, name) => {
+            updatedPlatforms.push({
+              id: id.toString(),
+              name,
+              logo: `https://via.placeholder.com/150x80?text=${encodeURIComponent(name)}`,
+              totalComplaints,
+            })
+            id++
+          })
+          
+          setPlatforms(updatedPlatforms)
+          
+          // Store'u da güncelle
+          useStore.setState({ complaints: sortedComplaints, platforms: updatedPlatforms })
+          console.log(`[HomePage] ${sortedComplaints.length} şikayet ve ${updatedPlatforms.length} platform güncellendi`)
+        } else {
+          console.warn('[HomePage] API\'den şikayet gelmedi, store\'daki veriler kullanılıyor')
+        }
+      } catch (error) {
+        console.error('[HomePage] Şikayetler yüklenirken hata:', error)
+      }
+    }
+    
+    loadComplaints()
+  }, [])
   
-  // Son 5 şikayeti göster
-  const recentComplaints = complaints
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, 5)
+  // useMemo ile hesaplamaları cache'le - gereksiz re-render'ları önle
+  const totalComplaints = useMemo(() => complaints.length, [complaints.length])
+  const activePlatforms = useMemo(() => platforms.length, [platforms.length])
+  const resolvedComplaints = useMemo(
+    () => complaints.filter(c => c.status === 'reviewed' || c.status === 'escalated').length,
+    [complaints]
+  )
+  
+  // Son 5 şikayeti göster (en yeni önce) - useMemo ile cache'le
+  const recentComplaints = useMemo(
+    () => [...complaints]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, 5),
+    [complaints]
+  )
 
   return (
     <div className="space-y-8">

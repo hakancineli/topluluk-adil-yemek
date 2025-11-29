@@ -73,3 +73,5 @@ const BulkComplaintBanner = ({ complaint, allComplaints }: BulkComplaintBannerPr
 
 export default BulkComplaintBanner
 
+
+

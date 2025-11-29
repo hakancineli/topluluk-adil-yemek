@@ -518,16 +518,34 @@ const sikayetvarComplaints: Omit<Complaint, 'id' | 'createdAt' | 'upvotes' | 'st
  * Şikayetvar'dan alınan şikayetleri sisteme ekler
  */
 export async function importSikayetvarComplaints(): Promise<void> {
-  console.log(`Şikayetvar'dan ${sikayetvarComplaints.length} şikayet ekleniyor...`)
+  console.log(`[importSikayetvarComplaints] Şikayetvar'dan ${sikayetvarComplaints.length} şikayet ekleniyor...`)
+  
+  // Mevcut şikayetleri kontrol et - duplicate önlemek için
+  const existingComplaints = await complaintApi.getAll()
+  const existingTitles = new Set(existingComplaints.map(c => c.title.toLowerCase().trim()))
+  
+  let addedCount = 0
+  let skippedCount = 0
   
   for (const complaint of sikayetvarComplaints) {
+    // Duplicate kontrolü - aynı başlık varsa ekleme
+    const normalizedTitle = complaint.title.toLowerCase().trim()
+    if (existingTitles.has(normalizedTitle)) {
+      skippedCount++
+      continue
+    }
+    
     try {
       await complaintApi.create(complaint)
-      console.log(`✓ Şikayet eklendi: ${complaint.title.substring(0, 50)}...`)
+      existingTitles.add(normalizedTitle) // Eklenen şikayeti set'e ekle
+      addedCount++
+      if (addedCount % 10 === 0) {
+        console.log(`[importSikayetvarComplaints] ${addedCount}/${sikayetvarComplaints.length} şikayet eklendi...`)
+      }
     } catch (error) {
-      console.error(`✗ Şikayet eklenirken hata: ${complaint.title}`, error)
+      console.error(`[importSikayetvarComplaints] Şikayet eklenirken hata: ${complaint.title.substring(0, 50)}...`, error)
     }
   }
   
-  console.log('Şikayetler başarıyla eklendi!')
+  console.log(`[importSikayetvarComplaints] Tamamlandı! ${addedCount} yeni şikayet eklendi, ${skippedCount} duplicate atlandı.`)
 }

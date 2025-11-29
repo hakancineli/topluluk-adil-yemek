@@ -1,20 +1,30 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useMemo, memo, useCallback } from 'react'
 import { useAuthStore } from '../store/authStore'
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const location = useLocation()
-  const { isAuthenticated, user, logout } = useAuthStore()
+  // Store'dan sadece ihtiyaç duyulan değerleri al - selector kullanarak
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const user = useAuthStore((state) => state.user)
+  const logout = useAuthStore((state) => state.logout)
 
-  const isActive = (path: string) => location.pathname === path
+  const isActive = useCallback((path: string) => location.pathname === path, [location.pathname])
 
-  const navLinks = [
+  const navLinks = useMemo(() => [
     { path: '/', label: 'Ana Sayfa' },
     { path: '/sikayetler', label: 'Şikayetler' },
     { path: '/sikayet-olustur', label: 'Şikayet Oluştur' },
     { path: '/platformlar', label: 'Platformlar' },
     { path: '/resmi-sikayetlerim', label: 'Resmi Şikayetlerim', protected: true },
     { path: '/hakkimizda', label: 'Hakkımızda' },
-  ]
+  ], [])
+
+  // Filtered navLinks'i memoize et
+  const visibleNavLinks = useMemo(
+    () => navLinks.filter((link) => !link.protected || isAuthenticated),
+    [navLinks, isAuthenticated]
+  )
 
   return (
     <nav className="bg-white shadow-lg">
@@ -26,9 +36,7 @@ const Navbar = () => {
           
           <div className="flex items-center space-x-4">
             <div className="flex space-x-4">
-              {navLinks
-                .filter((link) => !link.protected || isAuthenticated)
-                .map((link) => (
+              {visibleNavLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}
@@ -74,7 +82,9 @@ const Navbar = () => {
       </div>
     </nav>
   )
-}
+})
+
+Navbar.displayName = 'Navbar'
 
 export default Navbar
 

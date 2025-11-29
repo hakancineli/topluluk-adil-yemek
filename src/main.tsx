@@ -6,7 +6,16 @@ import './index.css'
 import { initializeComplaints } from './utils/initializeComplaints'
 
 // Uygulama başlangıcında şikayetleri yükle
-initializeComplaints().catch(console.error)
+// Production'da localStorage boş olabilir, bu yüzden her zaman çalıştır
+if (typeof window !== 'undefined') {
+  initializeComplaints()
+    .then(() => {
+      console.log('[main.tsx] Şikayetler başarıyla yüklendi')
+    })
+    .catch((error) => {
+      console.error('[main.tsx] Şikayetler yüklenirken hata:', error)
+    })
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
