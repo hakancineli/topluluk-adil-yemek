@@ -188,18 +188,27 @@ class MockApiClient {
     return new Promise((resolve) => {
       setTimeout(() => {
         const storage = this.getStorage()
-        const parts = endpoint.split('/')
-        const key = parts[parts.length - 2]
-        const id = parts[parts.length - 1]
-        const collection = storage[key] || []
+        // Endpoint formatı: /api/users/123 veya /api/complaints/456
+        const parts = endpoint.split('/').filter(p => p) // Boş string'leri filtrele
+        // parts = ['api', 'users', '123'] veya ['api', 'complaints', '456']
+        if (parts.length >= 3 && parts[0] === 'api') {
+          const key = parts[1] // 'users' veya 'complaints'
+          const id = parts[2] // '123' veya '456'
+          const collection = storage[key] || []
 
-        const filtered = collection.filter((item: any) => item.id !== id)
-        storage[key] = filtered
-        this.setStorage(storage)
+          const filtered = collection.filter((item: any) => item.id !== id)
+          storage[key] = filtered
+          this.setStorage(storage)
 
-        resolve({
-          success: true,
-        })
+          resolve({
+            success: true,
+          })
+        } else {
+          resolve({
+            success: false,
+            error: 'Geçersiz endpoint formatı',
+          })
+        }
       }, 300)
     })
   }

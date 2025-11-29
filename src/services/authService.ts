@@ -17,6 +17,15 @@ class AuthService {
       email: 'test@example.com',
       password: 'test123',
       name: 'Test Kullanıcı',
+      role: 'user',
+      createdAt: new Date('2024-01-01'),
+    },
+    {
+      id: 'admin-1',
+      email: 'admin@adilyemek.com',
+      password: 'admin123',
+      name: 'Admin',
+      role: 'admin',
       createdAt: new Date('2024-01-01'),
     },
   ]
@@ -69,12 +78,26 @@ class AuthService {
           email: data.email,
           password: data.password,
           name: data.name,
+          role: 'user',
           createdAt: new Date(),
         }
 
         this.mockUsers.push(newUser)
 
         const { password, ...userWithoutPassword } = newUser
+
+        // Kullanıcıyı localStorage'a da kaydet (userService üzerinden)
+        if (typeof window !== 'undefined') {
+          import('../services/api').then(({ apiClient }) => {
+            apiClient.post('/api/users', {
+              ...userWithoutPassword,
+              createdAt: newUser.createdAt.toISOString(),
+            }).catch((err) => {
+              console.error('Kullanıcı localStorage\'a kaydedilirken hata:', err)
+            })
+          })
+        }
+
         const token = `mock_token_${Date.now()}_${newUser.id}`
 
         resolve({

@@ -4,8 +4,9 @@ import { Toaster } from 'react-hot-toast'
 import App from './App.tsx'
 import './index.css'
 import { initializeComplaints } from './utils/initializeComplaints'
+import { initializeUsers } from './utils/initializeUsers'
 
-// Uygulama başlangıcında şikayetleri yükle
+// Uygulama başlangıcında şikayetleri ve kullanıcıları yükle
 // Production'da localStorage boş olabilir, bu yüzden her zaman çalıştır
 if (typeof window !== 'undefined') {
   initializeComplaints()
@@ -14,6 +15,14 @@ if (typeof window !== 'undefined') {
     })
     .catch((error) => {
       console.error('[main.tsx] Şikayetler yüklenirken hata:', error)
+    })
+  
+  initializeUsers()
+    .then(() => {
+      console.log('[main.tsx] Kullanıcılar başarıyla yüklendi')
+    })
+    .catch((error) => {
+      console.error('[main.tsx] Kullanıcılar yüklenirken hata:', error)
     })
 }
 

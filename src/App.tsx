@@ -2,10 +2,12 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import ProtectedRoute from './components/ProtectedRoute'
+import AdminProtectedRoute from './components/AdminProtectedRoute'
 import NotificationProvider from './components/NotificationProvider'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import AdminLoginPage from './pages/AdminLoginPage'
 
 // Lazy load sayfalar - code splitting için
 const ComplaintsPage = lazy(() => import('./pages/ComplaintsPage'))
@@ -16,6 +18,10 @@ const MyOfficialComplaintsPage = lazy(() => import('./pages/MyOfficialComplaints
 const BulkComplaintPage = lazy(() => import('./pages/BulkComplaintPage'))
 const EDevletCallbackPage = lazy(() => import('./pages/EDevletCallbackPage'))
 const ResmiSikayetCallbackPage = lazy(() => import('./pages/ResmiSikayetCallbackPage'))
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'))
+const AdminComplaintsPage = lazy(() => import('./pages/AdminComplaintsPage'))
+const AdminUsersPage = lazy(() => import('./pages/AdminUsersPage'))
+const AdminPlatformsPage = lazy(() => import('./pages/AdminPlatformsPage'))
 
 // Loading fallback component
 const PageLoader = () => (
@@ -51,6 +57,41 @@ function App() {
                 <Route path="/toplu-sikayet" element={<BulkComplaintPage />} />
                 <Route path="/edevlet-callback" element={<EDevletCallbackPage />} />
                 <Route path="/resmi-sikayet-callback" element={<ResmiSikayetCallbackPage />} />
+                
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminDashboardPage />
+                    </AdminProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/complaints"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminComplaintsPage />
+                    </AdminProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/users"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminUsersPage />
+                    </AdminProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/platforms"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminPlatformsPage />
+                    </AdminProtectedRoute>
+                  }
+                />
               </Routes>
             </Suspense>
           </main>
