@@ -1,62 +1,52 @@
-import { apiClient } from '../services/api'
-import { User } from '../types/user'
+import { userService } from '../services/userService'
+import { authService } from '../services/authService'
 
 /**
  * Uygulama başlangıcında kullanıcıları yükler
- * authService'teki mock kullanıcıları localStorage'a aktarır
+ * authService'teki mock kullanıcıları Supabase'e aktarır
  */
 export async function initializeUsers() {
-  // LocalStorage'da kullanıcılar varsa kontrol et
-  const storageData = localStorage.getItem('adil-yemek-api')
-  let existingCount = 0
-  
-  if (storageData) {
-    try {
-      const data = JSON.parse(storageData)
-      const users = data['users'] || []
-      existingCount = Array.isArray(users) ? users.length : 0
-      
-      // Eğer zaten kullanıcılar varsa, tekrar ekleme
-      if (existingCount > 0) {
-        console.log(`[initializeUsers] Kullanıcılar zaten yüklü (${existingCount} adet), tekrar eklenmeyecek.`)
-        return
+  if (typeof window === 'undefined') return
+
+  try {
+    // Supabase'de kullanıcılar varsa kontrol et
+    const existingUsers = await userService.getAllUsers()
+    
+    // Eğer zaten kullanıcılar varsa, tekrar ekleme
+    if (existingUsers.length > 0) {
+      console.log(`[initializeUsers] ${existingUsers.length} kullanıcı zaten yüklü.`)
+      return
+    }
+    
+    // Mock kullanıcıları ekle
+    const mockUsers = authService.getInitialMockUsers()
+    
+    console.log(`[initializeUsers] ${mockUsers.length} mock kullanıcı ekleniyor...`)
+    
+    for (const user of mockUsers) {
+      try {
+        // Kullanıcı zaten var mı kontrol et
+        const existing = await userService.getUserByEmail(user.email)
+        if (existing) {
+          console.log(`[initializeUsers] Kullanıcı zaten var: ${user.email}`)
+          continue
+        }
+        
+        await userService.createUser(user)
+        console.log(`[initializeUsers] Kullanıcı eklendi: ${user.email}`)
+      } catch (error: any) {
+        // Eğer kullanıcı zaten varsa hata verme
+        if (error.message?.includes('already exists') || error.message?.includes('unique')) {
+          console.log(`[initializeUsers] Kullanıcı zaten var: ${user.email}`)
+        } else {
+          console.error(`[initializeUsers] Kullanıcı eklenirken hata: ${user.email}`, error)
+        }
       }
-    } catch (e) {
-      console.error('[initializeUsers] LocalStorage verisi okunurken hata:', e)
     }
+    
+    console.log('[initializeUsers] Kullanıcılar başarıyla eklendi!')
+  } catch (error) {
+    console.error('[initializeUsers] Kullanıcılar yüklenirken hata:', error)
   }
-  
-  // Mock kullanıcıları ekle
-  const mockUsers: (Omit<User, 'lastLoginAt'> & { id: string })[] = [
-    {
-      id: '1',
-      email: 'test@example.com',
-      name: 'Test Kullanıcı',
-      role: 'user',
-      createdAt: new Date('2024-01-01'),
-    },
-    {
-      id: 'admin-1',
-      email: 'admin@adilyemek.com',
-      name: 'Admin',
-      role: 'admin',
-      createdAt: new Date('2024-01-01'),
-    },
-  ]
-  
-  console.log(`[initializeUsers] ${mockUsers.length} mock kullanıcı ekleniyor...`)
-  
-  for (const user of mockUsers) {
-    try {
-      await apiClient.post('/api/users', {
-        ...user,
-        createdAt: user.createdAt.toISOString(),
-      })
-    } catch (error) {
-      console.error(`[initializeUsers] Kullanıcı eklenirken hata: ${user.email}`, error)
-    }
-  }
-  
-  console.log('[initializeUsers] Kullanıcılar başarıyla eklendi!')
 }
 

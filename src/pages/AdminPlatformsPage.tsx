@@ -90,7 +90,6 @@ const AdminPlatformsPage = () => {
       const newPlatform = await platformService.create({
         name: formData.name.trim(),
         logo: formData.logo.trim() || `https://via.placeholder.com/150x80?text=${encodeURIComponent(formData.name.trim())}`,
-        totalComplaints: 0,
       })
       
       setPlatforms([...platforms, newPlatform])

@@ -1,70 +1,130 @@
 import { ContactMessage } from '../types'
-import { apiClient } from './api'
+import { supabase } from '../lib/supabase'
 
 /**
  * Contact Message API Service
- * Mock implementation - LocalStorage kullanıyor
+ * Supabase implementation
  */
 class ContactApiService {
-  private endpoint = '/api/contact-messages'
-
   async getAllMessages(): Promise<ContactMessage[]> {
-    const response = await apiClient.get<ContactMessage[]>(this.endpoint)
-    if (response.success && response.data) {
-      return response.data.map((msg) => ({
-        ...msg,
-        createdAt: new Date(msg.createdAt),
-        readAt: msg.readAt ? new Date(msg.readAt) : undefined,
-      }))
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching messages:', error)
+      throw new Error(error.message || 'Mesajlar yüklenemedi')
     }
-    return []
+
+    return (data || []).map((msg: any) => ({
+      id: msg.id,
+      name: msg.name,
+      email: msg.email,
+      subject: msg.subject,
+      message: msg.message,
+      read: msg.read || false,
+      createdAt: new Date(msg.created_at),
+      readAt: msg.read_at ? new Date(msg.read_at) : undefined,
+    }))
   }
 
   async getMessageById(id: string): Promise<ContactMessage | null> {
-    const allMessages = await this.getAllMessages()
-    return allMessages.find((msg) => msg.id === id) || null
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return null // Not found
+      }
+      console.error('Error fetching message:', error)
+      throw new Error(error.message || 'Mesaj yüklenemedi')
+    }
+
+    if (!data) return null
+
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+      read: data.read || false,
+      createdAt: new Date(data.created_at),
+      readAt: data.read_at ? new Date(data.read_at) : undefined,
+    }
   }
 
   async createMessage(message: Omit<ContactMessage, 'id' | 'createdAt' | 'read' | 'readAt'>): Promise<ContactMessage> {
-    const newMessage: ContactMessage = {
-      ...message,
-      id: Date.now().toString(),
-      createdAt: new Date(),
-      read: false,
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .insert({
+        name: message.name,
+        email: message.email,
+        subject: message.subject,
+        message: message.message,
+        read: false,
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating message:', error)
+      throw new Error(error.message || 'Mesaj oluşturulamadı')
     }
-    const response = await apiClient.post<ContactMessage>(this.endpoint, newMessage)
-    if (response.success && response.data) {
-      return {
-        ...response.data,
-        createdAt: new Date(response.data.createdAt),
-        readAt: response.data.readAt ? new Date(response.data.readAt) : undefined,
-      }
+
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+      read: data.read || false,
+      createdAt: new Date(data.created_at),
+      readAt: data.read_at ? new Date(data.read_at) : undefined,
     }
-    throw new Error(response.error || 'Mesaj oluşturulamadı')
   }
 
   async markAsRead(id: string): Promise<ContactMessage> {
-    const existing = await this.getMessageById(id)
-    if (!existing) {
-      throw new Error('Mesaj bulunamadı')
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .update({
+        read: true,
+        read_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error marking message as read:', error)
+      throw new Error(error.message || 'Mesaj güncellenemedi')
     }
 
-    const updated = { ...existing, read: true, readAt: new Date() }
-    const response = await apiClient.put<ContactMessage>(`${this.endpoint}/${id}`, updated)
-    if (response.success && response.data) {
-      return {
-        ...response.data,
-        createdAt: new Date(response.data.createdAt),
-        readAt: response.data.readAt ? new Date(response.data.readAt) : undefined,
-      }
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+      read: data.read || false,
+      createdAt: new Date(data.created_at),
+      readAt: data.read_at ? new Date(data.read_at) : undefined,
     }
-    throw new Error(response.error || 'Mesaj güncellenemedi')
   }
 
   async deleteMessage(id: string): Promise<void> {
-    const response = await apiClient.delete(`${this.endpoint}/${id}`)
-    if (!response.success) {
-      throw new Error(response.error || 'Mesaj silinemedi')
+    const { error } = await supabase
+      .from('contact_messages')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      console.error('Error deleting message:', error)
+      throw new Error(error.message || 'Mesaj silinemedi')
     }
   }
 }

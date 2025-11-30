@@ -1,4 +1,5 @@
 import { User, LoginCredentials, RegisterData } from '../types/user'
+import { userService } from './userService'
 
 interface AuthResponse {
   user: User
@@ -6,12 +7,12 @@ interface AuthResponse {
 }
 
 /**
- * Mock Authentication Service
- * Gerçek API entegrasyonu için backend API endpoint'leri kullanılacak
+ * Authentication Service
+ * Supabase implementation
  */
 class AuthService {
-  // Mock kullanıcılar (gerçek uygulamada veritabanından gelecek)
-  private mockUsers: Array<User & { password: string }> = [
+  // Initial mock users - sadece initializeUsers için
+  private initialMockUsers: Array<User & { password: string }> = [
     {
       id: '1',
       email: 'test@example.com',
@@ -30,100 +31,101 @@ class AuthService {
     },
   ]
 
+  // Initial mock users'ı döndürür (initializeUsers tarafından kullanılır)
+  getInitialMockUsers(): Array<User & { password: string }> {
+    return this.initialMockUsers
+  }
+
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    // Simüle edilmiş API çağrısı
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const user = this.mockUsers.find(
-          (u) => u.email === credentials.email && u.password === credentials.password
-        )
+    try {
+      // Supabase'den kullanıcıyı bul
+      const userWithPassword = await userService.getUserByEmail(credentials.email)
 
-        if (!user) {
-          reject(new Error('E-posta veya şifre hatalı'))
-          return
-        }
+      if (!userWithPassword) {
+        throw new Error('E-posta veya şifre hatalı')
+      }
 
-        const { password, ...userWithoutPassword } = user
-        const token = `mock_token_${Date.now()}_${user.id}`
+      // Şifreyi doğrula
+      const isValidPassword = await userService.verifyPassword(
+        credentials.password,
+        userWithPassword.password || ''
+      )
 
-        resolve({
-          user: {
-            ...userWithoutPassword,
-            lastLoginAt: new Date(),
-          },
-          token,
-        })
-      }, 1000)
-    })
+      if (!isValidPassword) {
+        throw new Error('E-posta veya şifre hatalı')
+      }
+
+      // lastLoginAt güncelle
+      await userService.updateUser(userWithPassword.id, { lastLoginAt: new Date() })
+
+      const { password, ...userWithoutPassword } = userWithPassword
+      const token = `mock_token_${Date.now()}_${userWithPassword.id}`
+
+      return {
+        user: {
+          ...userWithoutPassword,
+          lastLoginAt: new Date(),
+        },
+        token,
+      }
+    } catch (error: any) {
+      throw new Error(error.message || 'Giriş yapılırken bir hata oluştu')
+    }
   }
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Email kontrolü
-        if (this.mockUsers.find((u) => u.email === data.email)) {
-          reject(new Error('Bu e-posta adresi zaten kullanılıyor'))
-          return
-        }
+    try {
+      // Email kontrolü
+      const existingUser = await userService.getUserByEmail(data.email)
+      if (existingUser) {
+        throw new Error('Bu e-posta adresi zaten kullanılıyor')
+      }
 
-        // Şifre kontrolü
-        if (data.password.length < 6) {
-          reject(new Error('Şifre en az 6 karakter olmalıdır'))
-          return
-        }
+      // Şifre kontrolü
+      if (data.password.length < 6) {
+        throw new Error('Şifre en az 6 karakter olmalıdır')
+      }
 
-        // Yeni kullanıcı oluştur
-        const newUser: User & { password: string } = {
-          id: Date.now().toString(),
-          email: data.email,
-          password: data.password,
-          name: data.name,
-          role: 'user',
-          createdAt: new Date(),
-        }
+      // Yeni kullanıcı oluştur
+      const newUser = await userService.createUser({
+        id: Date.now().toString(),
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        role: 'user',
+        createdAt: new Date(),
+      })
 
-        this.mockUsers.push(newUser)
+      const { password, ...userWithoutPassword } = newUser
+      const token = `mock_token_${Date.now()}_${newUser.id}`
 
-        const { password, ...userWithoutPassword } = newUser
-
-        // Kullanıcıyı localStorage'a da kaydet (userService üzerinden)
-        if (typeof window !== 'undefined') {
-          import('../services/api').then(({ apiClient }) => {
-            apiClient.post('/api/users', {
-              ...userWithoutPassword,
-              createdAt: newUser.createdAt.toISOString(),
-            }).catch((err) => {
-              console.error('Kullanıcı localStorage\'a kaydedilirken hata:', err)
-            })
-          })
-        }
-
-        const token = `mock_token_${Date.now()}_${newUser.id}`
-
-        resolve({
-          user: userWithoutPassword,
-          token,
-        })
-      }, 1000)
-    })
+      return {
+        user: userWithoutPassword,
+        token,
+      }
+    } catch (error: any) {
+      throw new Error(error.message || 'Kayıt olurken bir hata oluştu')
+    }
   }
 
   async getCurrentUser(token: string): Promise<User> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Token'dan user ID'yi çıkar (mock)
-        const userId = token.split('_').pop()
-        const user = this.mockUsers.find((u) => u.id === userId)
+    try {
+      // Token'dan user ID'yi çıkar (mock)
+      const userId = token.split('_').pop()
+      if (!userId) {
+        throw new Error('Geçersiz token')
+      }
 
-        if (!user) {
-          reject(new Error('Kullanıcı bulunamadı'))
-          return
-        }
+      const userWithPassword = await userService.getUserById(userId)
+      if (!userWithPassword) {
+        throw new Error('Kullanıcı bulunamadı')
+      }
 
-        const { password, ...userWithoutPassword } = user
-        resolve(userWithoutPassword)
-      }, 500)
-    })
+      const { password, ...userWithoutPassword } = userWithPassword
+      return userWithoutPassword
+    } catch (error: any) {
+      throw new Error(error.message || 'Kullanıcı bulunamadı')
+    }
   }
 }
 

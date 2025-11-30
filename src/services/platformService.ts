@@ -1,57 +1,146 @@
 import { Platform } from '../types'
-import { apiClient } from './api'
+import { supabase } from '../lib/supabase'
 
 /**
  * Platform API Service
- * Mock implementation - LocalStorage kullanıyor
+ * Supabase implementation
  */
 class PlatformApiService {
-  private endpoint = '/api/platforms'
-
   async getAll(): Promise<Platform[]> {
-    const response = await apiClient.get<Platform[]>(this.endpoint)
-    if (response.success && response.data) {
-      return response.data
+    const { data, error } = await supabase
+      .from('platforms')
+      .select('*')
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching platforms:', error)
+      throw new Error(error.message || 'Platformlar yüklenemedi')
     }
-    return []
+
+    // total_complaints'i dinamik olarak hesapla
+    const platforms = (data || []).map((p: any) => ({
+      id: p.id,
+      name: p.name,
+      logo: p.logo || `https://via.placeholder.com/150x80?text=${encodeURIComponent(p.name)}`,
+      totalComplaints: p.total_complaints || 0,
+    }))
+
+    // Her platform için gerçek şikayet sayısını hesapla
+    const { data: complaintsData } = await supabase
+      .from('complaints')
+      .select('platform')
+
+    if (complaintsData) {
+      const complaintCounts = complaintsData.reduce((acc: Record<string, number>, c: any) => {
+        acc[c.platform] = (acc[c.platform] || 0) + 1
+        return acc
+      }, {})
+
+      return platforms.map(p => ({
+        ...p,
+        totalComplaints: complaintCounts[p.name] || 0,
+      }))
+    }
+
+    return platforms
   }
 
   async getById(id: string): Promise<Platform | null> {
-    const all = await this.getAll()
-    return all.find((p) => p.id === id) || null
+    const { data, error } = await supabase
+      .from('platforms')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return null // Not found
+      }
+      console.error('Error fetching platform:', error)
+      throw new Error(error.message || 'Platform yüklenemedi')
+    }
+
+    if (!data) return null
+
+    // Şikayet sayısını hesapla
+    const { count } = await supabase
+      .from('complaints')
+      .select('*', { count: 'exact', head: true })
+      .eq('platform', data.name)
+
+    return {
+      id: data.id,
+      name: data.name,
+      logo: data.logo || `https://via.placeholder.com/150x80?text=${encodeURIComponent(data.name)}`,
+      totalComplaints: count || 0,
+    }
   }
 
-  async create(platform: Omit<Platform, 'id'>): Promise<Platform> {
-    const newPlatform: Platform = {
-      ...platform,
-      id: Date.now().toString(),
+  async create(platform: Omit<Platform, 'id' | 'totalComplaints'>): Promise<Platform> {
+    const { data, error } = await supabase
+      .from('platforms')
+      .insert({
+        name: platform.name,
+        logo: platform.logo || `https://via.placeholder.com/150x80?text=${encodeURIComponent(platform.name)}`,
+        total_complaints: 0,
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating platform:', error)
+      throw new Error(error.message || 'Platform oluşturulamadı')
     }
 
-    const response = await apiClient.post<Platform>(this.endpoint, newPlatform)
-    if (response.success && response.data) {
-      return response.data
+    return {
+      id: data.id,
+      name: data.name,
+      logo: data.logo || `https://via.placeholder.com/150x80?text=${encodeURIComponent(data.name)}`,
+      totalComplaints: 0,
     }
-    throw new Error(response.error || 'Platform oluşturulamadı')
   }
 
   async update(id: string, updates: Partial<Platform>): Promise<Platform> {
-    const existing = await this.getById(id)
-    if (!existing) {
-      throw new Error('Platform bulunamadı')
+    const updateData: any = {}
+    
+    if (updates.name !== undefined) updateData.name = updates.name
+    if (updates.logo !== undefined) updateData.logo = updates.logo
+
+    const { data, error } = await supabase
+      .from('platforms')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error updating platform:', error)
+      throw new Error(error.message || 'Platform güncellenemedi')
     }
 
-    const updated = { ...existing, ...updates }
-    const response = await apiClient.put<Platform>(`${this.endpoint}/${id}`, updated)
-    if (response.success && response.data) {
-      return response.data
+    // Şikayet sayısını hesapla
+    const { count } = await supabase
+      .from('complaints')
+      .select('*', { count: 'exact', head: true })
+      .eq('platform', data.name)
+
+    return {
+      id: data.id,
+      name: data.name,
+      logo: data.logo || `https://via.placeholder.com/150x80?text=${encodeURIComponent(data.name)}`,
+      totalComplaints: count || 0,
     }
-    throw new Error(response.error || 'Platform güncellenemedi')
   }
 
   async delete(id: string): Promise<void> {
-    const response = await apiClient.delete(`${this.endpoint}/${id}`)
-    if (!response.success) {
-      throw new Error(response.error || 'Platform silinemedi')
+    const { error } = await supabase
+      .from('platforms')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      console.error('Error deleting platform:', error)
+      throw new Error(error.message || 'Platform silinemedi')
     }
   }
 }
