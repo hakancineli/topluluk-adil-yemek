@@ -85,7 +85,7 @@ const ComplaintsPage = () => {
       )}
 
       {/* Filtreleme ve Arama */}
-      <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md space-y-4">
         {/* Arama çubuğu */}
         <div>
           <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
@@ -97,12 +97,12 @@ const ComplaintsPage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Başlık veya açıklamada ara..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm md:text-base"
           />
         </div>
 
         {/* Filtreler */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {/* Platform filtresi */}
           <div>
             <label htmlFor="platform" className="block text-sm font-medium text-gray-700 mb-2">

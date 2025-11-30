@@ -77,17 +77,19 @@ const ComplaintCard = ({ complaint, showAdminControls = true }: ComplaintCardPro
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-lg shadow-md p-4 md:p-6 hover:shadow-lg transition-shadow">
       <BulkComplaintBanner complaint={complaint} allComplaints={complaints} />
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">{complaint.title}</h3>
-          <p className="text-gray-600 mb-4 line-clamp-3">{complaint.description}</p>
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">{complaint.title}</h3>
+          <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-3">{complaint.description}</p>
         </div>
-        {getStatusBadge(complaint.status)}
+        <div className="self-start sm:self-auto">
+          {getStatusBadge(complaint.status)}
+        </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-600">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-4 mb-4 text-xs sm:text-sm text-gray-600">
         <div className="flex items-center">
           <span className="font-medium mr-2">Platform:</span>
           <span className="bg-gray-100 px-2 py-1 rounded">{complaint.platform}</span>
@@ -102,10 +104,10 @@ const ComplaintCard = ({ complaint, showAdminControls = true }: ComplaintCardPro
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between pt-4 border-t gap-3">
         <button
           onClick={handleUpvote}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors font-medium"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors font-medium text-sm md:text-base"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -125,8 +127,8 @@ const ComplaintCard = ({ complaint, showAdminControls = true }: ComplaintCardPro
           </span>
         </button>
 
-        <div className="flex items-center gap-3">
-          <div className="text-sm text-gray-500">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <div className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">
             {complaint.upvotes} kişi bu şikayeti destekliyor
           </div>
           <OfficialComplaintButton

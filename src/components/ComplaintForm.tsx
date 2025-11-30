@@ -125,9 +125,9 @@ const ComplaintForm = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Yeni Şikayet Oluştur</h2>
+    <div className="max-w-2xl mx-auto px-2 md:px-0">
+      <form onSubmit={handleSubmit} className="bg-white p-4 md:p-8 rounded-lg shadow-lg space-y-4 md:space-y-6">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">Yeni Şikayet Oluştur</h2>
 
         {/* Başlık */}
         <div>
@@ -140,7 +140,7 @@ const ComplaintForm = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+            className={`w-full px-3 md:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm md:text-base ${
               errors.title ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Örn: Yemeksepeti Yüksek Komisyon Oranı"
@@ -161,7 +161,7 @@ const ComplaintForm = () => {
             value={formData.description}
             onChange={handleChange}
             rows={6}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+            className={`w-full px-3 md:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm md:text-base ${
               errors.description ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Şikayetinizi detaylı bir şekilde açıklayın..."
@@ -179,11 +179,11 @@ const ComplaintForm = () => {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Kim Şikayetçi? <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
             {(['restaurant', 'customer', 'courier'] as ComplaintCategory[]).map((category) => (
               <label
                 key={category}
-                className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                className={`flex items-center p-3 md:p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                   formData.category === category
                     ? 'border-primary-500 bg-primary-50'
                     : 'border-gray-300 hover:border-gray-400'
@@ -239,11 +239,11 @@ const ComplaintForm = () => {
         )}
 
         {/* Gönder butonu */}
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`flex-1 bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors ${
+            className={`flex-1 bg-primary-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors text-sm md:text-base ${
               isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
@@ -252,7 +252,7 @@ const ComplaintForm = () => {
           <button
             type="button"
             onClick={() => navigate('/sikayetler')}
-            className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="px-4 md:px-6 py-2 md:py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base"
           >
             İptal
           </button>

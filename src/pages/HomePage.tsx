@@ -94,21 +94,21 @@ const HomePage = () => {
   )
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-6 md:space-y-12 px-2 md:px-0">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 rounded-2xl shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 rounded-xl md:rounded-2xl shadow-2xl">
         <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative px-6 py-16 md:py-24 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+        <div className="relative px-4 md:px-6 py-12 md:py-16 lg:py-24 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight px-2">
             AdilYemek'e Hoş Geldiniz
           </h1>
-          <p className="text-xl md:text-2xl text-primary-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-primary-100 mb-6 md:mb-8 max-w-2xl mx-auto px-2">
             Yemek sipariş platformlarındaki sorunları birlikte çözelim
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
             <Link
               to="/sikayet-olustur"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg shadow-lg hover:bg-primary-50 transition-all duration-200 transform hover:scale-105"
+              className="inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-white text-primary-600 font-semibold rounded-lg shadow-lg hover:bg-primary-50 transition-all duration-200 transform hover:scale-105 text-sm md:text-base"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -117,7 +117,7 @@ const HomePage = () => {
             </Link>
             <Link
               to="/sikayetler"
-              className="inline-flex items-center justify-center px-8 py-4 bg-primary-500 text-white font-semibold rounded-lg shadow-lg hover:bg-primary-400 transition-all duration-200 transform hover:scale-105"
+              className="inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-primary-500 text-white font-semibold rounded-lg shadow-lg hover:bg-primary-400 transition-all duration-200 transform hover:scale-105 text-sm md:text-base"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -129,8 +129,8 @@ const HomePage = () => {
       </div>
       
       {/* İstatistikler */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-primary-500">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-primary-500">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-primary-100 p-3 rounded-lg">
               <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,25 +138,25 @@ const HomePage = () => {
               </svg>
             </div>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             {totalComplaints.toLocaleString('tr-TR')}
           </h2>
-          <p className="text-gray-600 font-medium">Toplam Şikayet</p>
+          <p className="text-gray-600 font-medium text-sm md:text-base">Toplam Şikayet</p>
         </div>
-        <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-blue-500">
+        <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-blue-500">
           <div className="flex items-center justify-between mb-4">
-            <div className="bg-blue-100 p-3 rounded-lg">
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-blue-100 p-2 md:p-3 rounded-lg">
+              <svg className="w-6 h-6 md:w-8 md:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             {activePlatforms}
           </h2>
-          <p className="text-gray-600 font-medium">Aktif Platform</p>
+          <p className="text-gray-600 font-medium text-sm md:text-base">Aktif Platform</p>
         </div>
-        <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-green-500">
+        <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-green-500 sm:col-span-2 md:col-span-1">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-green-100 p-3 rounded-lg">
               <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,17 +164,17 @@ const HomePage = () => {
               </svg>
             </div>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             {resolvedComplaints}
           </h2>
-          <p className="text-gray-600 font-medium">İncelenen/Üst Seviyeye Taşınan</p>
+          <p className="text-gray-600 font-medium text-sm md:text-base">İncelenen/Üst Seviyeye Taşınan</p>
         </div>
       </div>
 
       {/* Son Şikayetler */}
-      <div className="bg-white p-8 rounded-xl shadow-lg">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-bold text-gray-900">Son Şikayetler</h2>
+      <div className="bg-white p-4 md:p-8 rounded-xl shadow-lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-2">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Son Şikayetler</h2>
           <Link
             to="/sikayetler"
             className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 transition-colors"
@@ -204,17 +204,17 @@ const HomePage = () => {
               <Link
                 key={complaint.id}
                 to="/sikayetler"
-                className="block border-l-4 border-primary-500 bg-gray-50 hover:bg-gray-100 pl-6 pr-4 py-4 rounded-r-lg transition-all duration-200 hover:shadow-md group"
+                className="block border-l-4 border-primary-500 bg-gray-50 hover:bg-gray-100 pl-4 md:pl-6 pr-3 md:pr-4 py-3 md:py-4 rounded-r-lg transition-all duration-200 hover:shadow-md group"
               >
-                <div className="flex justify-between items-start gap-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 md:gap-4">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
+                    <h3 className="text-sm md:text-base font-semibold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
                       {complaint.title || 'Başlıksız Şikayet'}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-3 line-clamp-2">
                       {complaint.description ? `${complaint.description.substring(0, 120)}...` : 'Açıklama yok'}
                     </p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 flex-wrap">
+                    <div className="flex items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-500 flex-wrap">
                       <span className="inline-flex items-center gap-1">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -235,7 +235,7 @@ const HomePage = () => {
                       </span>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+                  <span className={`px-2 md:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap self-start sm:self-auto ${
                     complaint.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                     complaint.status === 'reviewed' ? 'bg-blue-100 text-blue-800' :
                     'bg-green-100 text-green-800'
@@ -289,8 +289,8 @@ const HomePage = () => {
           </ul>
         </div>
 
-        <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-xl shadow-lg border border-primary-200">
-          <div className="flex items-center gap-3 mb-6">
+        <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-4 md:p-8 rounded-xl shadow-lg border border-primary-200">
+          <div className="flex items-center gap-3 mb-4 md:mb-6">
             <div className="bg-primary-600 p-3 rounded-lg">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
