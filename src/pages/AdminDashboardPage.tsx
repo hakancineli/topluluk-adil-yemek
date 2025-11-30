@@ -1,11 +1,26 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useStore } from '../store/useStore'
 import { useAuthStore } from '../store/authStore'
+import { contactService } from '../services/contactService'
+import { FaEnvelope } from 'react-icons/fa'
 
 const AdminDashboardPage = () => {
   const { complaints, platforms } = useStore()
   const { user } = useAuthStore()
+  const [unreadMessages, setUnreadMessages] = useState(0)
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const messages = await contactService.getAllMessages()
+        setUnreadMessages(messages.filter(m => !m.read).length)
+      } catch (error) {
+        console.error('Failed to fetch messages:', error)
+      }
+    }
+    fetchUnreadCount()
+  }, [])
 
   const stats = useMemo(() => {
     const totalComplaints = complaints.length
@@ -129,6 +144,20 @@ const AdminDashboardPage = () => {
           >
             <h3 className="font-semibold text-gray-900">Kullanıcı Yönetimi</h3>
             <p className="text-sm text-gray-600 mt-1">Kullanıcıları görüntüle ve yönet</p>
+          </Link>
+          <Link
+            to="/admin/messages"
+            className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors relative"
+          >
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-semibold text-gray-900">Gelen Mesajlar</h3>
+              {unreadMessages > 0 && (
+                <span className="bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                  {unreadMessages}
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-gray-600 mt-1">Kullanıcı mesajlarını görüntüle ve yönet</p>
           </Link>
         </div>
       </div>

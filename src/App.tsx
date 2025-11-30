@@ -23,6 +23,8 @@ const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'))
 const AdminComplaintsPage = lazy(() => import('./pages/AdminComplaintsPage'))
 const AdminUsersPage = lazy(() => import('./pages/AdminUsersPage'))
 const AdminPlatformsPage = lazy(() => import('./pages/AdminPlatformsPage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
+const AdminMessagesPage = lazy(() => import('./pages/AdminMessagesPage'))
 
 // Loading fallback component
 const PageLoader = () => (
@@ -47,6 +49,7 @@ function App() {
                 <Route path="/sikayet-olustur" element={<CreateComplaintPage />} />
                 <Route path="/platformlar" element={<PlatformsPage />} />
                 <Route path="/hakkimizda" element={<AboutPage />} />
+                <Route path="/iletisim" element={<ContactPage />} />
                 <Route
                   path="/resmi-sikayetlerim"
                   element={
@@ -90,6 +93,14 @@ function App() {
                   element={
                     <AdminProtectedRoute>
                       <AdminPlatformsPage />
+                    </AdminProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/messages"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminMessagesPage />
                     </AdminProtectedRoute>
                   }
                 />

@@ -75,3 +75,15 @@ export interface BulkComplaint {
   minComplaintsForSubmission?: number // Gönderim için minimum şikayet sayısı
 }
 
+// İletişim Mesajı Interface'i
+export interface ContactMessage {
+  id: string
+  name: string
+  email: string
+  subject: string
+  message: string
+  createdAt: Date
+  read: boolean
+  readAt?: Date
+}
+

@@ -19,6 +19,7 @@ const Navbar = memo(() => {
     { path: '/platformlar', label: 'Platformlar' },
     { path: '/resmi-sikayetlerim', label: 'Resmi Şikayetlerim', protected: true },
     { path: '/hakkimizda', label: 'Hakkımızda' },
+    { path: '/iletisim', label: 'İletişim' },
   ], [])
 
   // Filtered navLinks'i memoize et
